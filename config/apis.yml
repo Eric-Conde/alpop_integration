@@ -7,7 +7,7 @@ apis:
   
   zendesk:
     config:
-      host: https://api.zendesk.com
+      host: https://alpophelp.zendesk.com/api/v2/
       authorization: access_token
       content_type: application/json
 
