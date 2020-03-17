@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
+require 'singleton'
 require 'yaml'
 require 'json'
 
 # Middleware is responsible for credentials, apis and requests.
 class Middleware
+  include Singleton
+
   # Constants.
   CONFIG_PATH = 'config'
 

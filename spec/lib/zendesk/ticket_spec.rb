@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'zendesk/ticket'
-require 'middleware'
 
 describe Zendesk::Ticket do
   before(:each) do
@@ -26,15 +25,7 @@ describe Zendesk::Ticket do
   describe '.find' do
     context 'when .find() is called' do
       it 'retrieves a Ticket by id' do
-        middleware = Middleware.new
-        
-        api = 'zendesk'
-        query = 'tickets/2122'
-
-        response = middleware.do_request(api, query, 'GET')
-        body = response.body
-
-        ticket = Zendesk::Ticket.parse(body)
+        ticket = Zendesk::Ticket.find(2122)
 
         expect(ticket.id).to eq 2122
       end

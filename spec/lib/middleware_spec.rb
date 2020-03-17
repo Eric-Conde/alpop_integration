@@ -4,9 +4,10 @@ require 'middleware'
 require 'yaml'
 
 describe Middleware do
+  let(:middleware) { Middleware.instance }
+  
   context 'initializer' do
     it 'must load endpoints configs' do
-      middleware = Middleware.new
 
       # Load YML.
       apis_yml_file = File.read('config/apis.yml')
@@ -25,7 +26,6 @@ describe Middleware do
     end
 
     it 'must load access tokens' do
-      middleware = Middleware.new
       # Load YML.
       access_tokens_yml_file = File.read('config/access_tokens.yml')
       access_tokens_yml = YAML.safe_load(access_tokens_yml_file)
@@ -39,6 +39,10 @@ describe Middleware do
       # Expectations.
       middleware_access_tokens = middleware.access_tokens
       expect(middleware_access_tokens.size).to eq expected_loaded_access_tokens
+    end
+
+    it 'is a singleton' do
+      expect(Middleware.respond_to?(:new)).to be false
     end
   end
 
@@ -62,7 +66,6 @@ describe Middleware do
       api = 'pipefy'
       query = 'whatever'
 
-      middleware = Middleware.new
       http_method = 'GET'
       response = middleware.do_request(api, query, http_method)
 
@@ -73,7 +76,6 @@ describe Middleware do
       api = 'pipefy'
       query = 'whatever'
 
-      middleware = Middleware.new
       http_method = 'POST'
       response = middleware.do_request(api, query, http_method)
 
@@ -84,7 +86,6 @@ describe Middleware do
       api = 'pipefy'
       query = 'whatever'
 
-      middleware = Middleware.new
       http_method = 'POST'
       response = middleware.do_request(api, query, http_method)
 
