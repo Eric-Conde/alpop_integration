@@ -1,0 +1,18 @@
+apis:
+  pipefy: 
+    config:
+      host: https://api.pipefy.com/graphq
+      authorization: access_token
+      content_type: application/json
+  
+  zendesk:
+    config:
+      host: https://api.zendesk.com
+      authorization: access_token
+      content_type: application/json
+
+  superlogica:
+    config:
+      host: https://api.superlogica.com
+      authorization: access_token
+      content_type: application/json
