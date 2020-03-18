@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :card, class: 'Pipefy::Card' do
+    id { random_integer }
     title { random_string }
-    pipe_id { random_integer }
   end
 end

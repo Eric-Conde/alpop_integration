@@ -5,10 +5,9 @@ require 'yaml'
 
 describe Middleware do
   let(:middleware) { Middleware.instance }
-  
+
   context 'initializer' do
     it 'must load endpoints configs' do
-
       # Load YML.
       apis_yml_file = File.read('config/apis.yml')
       apis_yml = YAML.safe_load(apis_yml_file)
