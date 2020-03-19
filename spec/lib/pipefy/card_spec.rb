@@ -36,4 +36,17 @@ describe Pipefy::Card do
       end
     end
   end
+
+  describe '.parse' do
+    context 'when .parse() is called' do
+      it 'returns Card object' do
+        card_json_response = '{"data": {"card": {"id": "60962201","pipe": {"id": "1182718"},"title": "Rosangela "}}}'
+
+        card = Pipefy::Card.parse(card_json_response)
+
+        expect(card.id).not_to be_nil
+        expect(card.title).not_to be_nil
+      end
+    end
+  end
 end
