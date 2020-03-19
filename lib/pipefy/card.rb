@@ -23,15 +23,48 @@ module Pipefy
       response = @middleware.do_request(api, query, 'POST')
       body = response.body
 
-      Pipefy::Card.parse(body)
+      Pipefy::Card.parse(body, 'find')
     end
 
-    def self.parse(response)
-      json_response = JSON.parse(response)
-      id = json_response['data']['card']['id']
-      title = json_response['data']['card']['title']
+    def self.all(pipe_id = nil)
+       api = 'pipefy'
 
+       query = "{\"query\":\"{ cards(pipe_id: #{pipe_id}, first: 10)" +
+               "{ edges { node {id title} } } }\"}"
+
+      response = @middleware.do_request(api, query, 'POST')
+      body = response.body
+
+      Pipefy::Card.parse(body, 'all')
+    end
+
+    def self.parse(response, card_method)
+      response = JSON.parse(response)
+      
+      card_method = "parse_#{card_method}"
+
+      Pipefy::Card.send(card_method, response)
+    end
+
+    def self.parse_find(response)
+      id = response['data']['card']['id']
+      title = response['data']['card']['title']
+      
       Pipefy::Card.new(id, title)
+    end
+
+    def self.parse_all(response)
+      nodes = response['data']['cards']['edges']
+      cards = []
+      
+      nodes.each do |node|
+        id = node['id']
+        title = node['title']
+        
+        card = Pipefy::Card.new(id, title)
+        cards << card
+      end
+      cards
     end
   end
 end
