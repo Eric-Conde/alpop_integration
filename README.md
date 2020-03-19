@@ -15,3 +15,8 @@ Projeto escola para ajudar no aprendizado de programação.
 ### Passo-a-passo da construção
 
 1. Começar sempre pelos testes.
+
+
+### Referências
+
+https://auth0.com/blog/ruby-authentication-secure-rack-apps-with-jwt/
