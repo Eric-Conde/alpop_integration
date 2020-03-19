@@ -65,8 +65,6 @@ describe Pipefy::Card do
 
         expect(cards.class).to eq Array
         expect(card.class).to eq Pipefy::Card
-
-        # expect(Middleware.instance).to receive(:do_request).with(api, query, 'POST')
       end
     end
   end

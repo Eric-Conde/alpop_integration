@@ -27,10 +27,10 @@ module Pipefy
     end
 
     def self.all(pipe_id = nil)
-       api = 'pipefy'
+      api = 'pipefy'
 
-       query = "{\"query\":\"{ cards(pipe_id: #{pipe_id}, first: 10)" +
-               "{ edges { node {id title} } } }\"}"
+      query = "{\"query\":\"{ cards(pipe_id: #{pipe_id}, first: 10)" \
+              "{ edges { node {id title} } } }\"}"
 
       response = @middleware.do_request(api, query, 'POST')
       body = response.body
