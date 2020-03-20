@@ -1,11 +1,13 @@
-require 'bundler'
-Bundler.require
+# frozen_string_literal: true
 
-require File.join(File.dirname(__FILE__),'lib', 'middleware')
+# Loading event listeners.
+require File.join(File.dirname(__FILE__), 'lib/api/v1/zendesk', 'event')
+require File.join(File.dirname(__FILE__), 'lib/api/v1/pipefy', 'event')
+require File.join(File.dirname(__FILE__), 'config', 'routes')
 
-MiddlewareApplication = Middleware.instance
+routes = Rack::URLMap.new({
+                            '/api/v1/zendesk/events/' => ZendeskEvent,
+                            '/api/v1/pipefy/events/' => PipefyEvent
+                          })
 
-# Load the routes
-require File.join(File.dirname(__FILE__),'config', 'routes')
-
-run Middleware.instance
+run routes

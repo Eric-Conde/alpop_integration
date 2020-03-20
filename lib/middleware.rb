@@ -25,14 +25,6 @@ class Middleware
     @access_tokens = Middleware.load_access_tokens
   end
 
-  def call(env)
-    puts "--> Log request\n"
-    puts env.inspect
-    puts "\n"
-
-    [200, { 'content-type' => 'application/json' }, ["Hello World, Rafa! Mocoronga virus"]]
-  end
-
   def do_request(api, query, http_method = 'GET')
     host, authorization_key, content_type = seek_api(api)
 

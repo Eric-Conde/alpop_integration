@@ -19,4 +19,12 @@ Projeto escola para ajudar no aprendizado de programação.
 
 ### Referências
 
-https://auth0.com/blog/ruby-authentication-secure-rack-apps-with-jwt/
+- https://auth0.com/blog/ruby-authentication-secure-rack-apps-with-jwt/
+- http://sinatrarb.com/intro.html
+- https://developers.pipefy.com/reference#graphql-endpoint
+
+### Glossário
+
+- ***Puma***: é o web server, trata as requisições e respostas. É uma infraestrutura Rack.
+- ***Rack***: é uma interface entre os web servers e as web applications.
+- ***Sinatra***: é o web application. O Middleware vai usar classes derivadas do Sinatra::Base.
