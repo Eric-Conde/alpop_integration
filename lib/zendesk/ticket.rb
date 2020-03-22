@@ -4,6 +4,9 @@ require 'middleware'
 
 # Zendesk module.
 module Zendesk
+
+  API = 'zendesk'
+
   # Zendesk Ticket ruby object.
   class Ticket
     attr_accessor :id
@@ -15,9 +18,8 @@ module Zendesk
     end
 
     def self.find(id)
-      api = 'zendesk'
       query = "tickets/#{id}"
-      response = @middleware.do_request(api, query, 'GET')
+      response = @middleware.do_request(API, query, 'GET')
       body = response.body
       Zendesk::Ticket.parse(body)
     end

@@ -28,7 +28,7 @@ describe Pipefy::Card do
         .to_return(status: 200, body: find_card_by_id_response, headers: {})
     end
 
-    context 'when .find() is called' do
+    context 'when call .find()' do
       it 'retrieves a Card by id' do
         ticket = Pipefy::Card.find(2122)
 
@@ -49,7 +49,7 @@ describe Pipefy::Card do
         .to_return(status: 200, body: all_cards_by_pipe_id, headers: {})
     end
 
-    context 'when .all(pipe_id) is called' do
+    context 'when call .all(pipe_id)' do
       it 'returns an array of Card objects' do
         response = '{"data": {"cards": {"edges": [{"node": ' + 
                    '{"id": "59542804","title": "Andreza Sales Ferreira"}}]}}}'
@@ -65,6 +65,17 @@ describe Pipefy::Card do
 
         expect(cards.class).to eq Array
         expect(card.class).to eq Pipefy::Card
+      end
+    end
+  end
+
+  describe '.create' do
+    context 'when call .create(pipe_id)' do
+      it 'creates a card in a pipe' do
+        pipe_id = 1234
+        card = Pipefy::Card.create(pipe_id)
+
+        expect(card).not_to be_nil
       end
     end
   end

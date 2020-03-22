@@ -4,6 +4,9 @@ require 'middleware'
 
 # Pipefy module.
 module Pipefy
+
+  API = 'pipefy'
+  
   # Card is a ruby representation of Pipefy Card.
   class Card
     attr_accessor :id, :title
@@ -20,22 +23,24 @@ module Pipefy
       query = "{\"query\":\"{ card(id: \\\"#{id}\\\")" \
               ' {title, pipe {id}}}"}'
 
-      response = @middleware.do_request(api, query, 'POST')
+      response = @middleware.do_request(API, query, 'POST')
       body = response.body
 
       Pipefy::Card.parse(body, 'find')
     end
 
     def self.all(pipe_id = nil)
-      api = 'pipefy'
-
       query = "{\"query\":\"{ cards(pipe_id: #{pipe_id}, first: 10)" \
               "{ edges { node {id title} } } }\"}"
 
-      response = @middleware.do_request(api, query, 'POST')
+      response = @middleware.do_request(API, query, 'POST')
       body = response.body
 
       Pipefy::Card.parse(body, 'all')
+    end
+
+    def self.create(pipe_id = nil)
+
     end
 
     def self.parse(response, card_method)
