@@ -1,14 +1,18 @@
 # frozen_string_literal: true
 
 require 'middleware'
+require 'query_builder'
 
 # Pipefy module.
 module Pipefy
+  API = 'pipefy'
+
   # Card is a ruby representation of Pipefy Card.
   class Card
     attr_accessor :id, :title
 
     @middleware = Middleware.instance
+    @query_builder = QueryBuilder.new
 
     def initialize(id = nil, title = nil)
       @title = title
@@ -16,52 +20,43 @@ module Pipefy
     end
 
     def self.find(id)
-      api = 'pipefy'
-      query = "{\"query\":\"{ card(id: \\\"#{id}\\\")" \
-              ' {title, pipe {id}}}"}'
+      query = @query_builder.build(API, 'card', 'find', { id: id })
 
-      response = @middleware.do_request(api, query, 'POST')
+      response = @middleware.do_request(API, query, 'POST')
       body = response.body
 
-      Pipefy::Card.parse(body, 'find')
+      Card.parse(body, 'find')
     end
 
     def self.all(pipe_id = nil)
-      api = 'pipefy'
-
-      query = "{\"query\":\"{ cards(pipe_id: #{pipe_id}, first: 10)" \
-              "{ edges { node {id title} } } }\"}"
-
-      response = @middleware.do_request(api, query, 'POST')
+      query = @query_builder.build(API, 'card', 'all', { pipe_id: pipe_id })
+      response = @middleware.do_request(API, query, 'POST')
       body = response.body
 
       Pipefy::Card.parse(body, 'all')
     end
 
-    def self.parse(response, card_method)
+    def self.parse(response, method)
       response = JSON.parse(response)
-      
-      card_method = "parse_#{card_method}"
-
-      Pipefy::Card.send(card_method, response)
+      method = "parse_#{method}"
+      Card.send(method, response)
     end
 
     def self.parse_find(response)
       id = response['data']['card']['id']
       title = response['data']['card']['title']
-      
-      Pipefy::Card.new(id, title)
+
+      Card.new(id, title)
     end
 
     def self.parse_all(response)
       nodes = response['data']['cards']['edges']
       cards = []
-      
+
       nodes.each do |node|
         id = node['id']
         title = node['title']
-        
-        card = Pipefy::Card.new(id, title)
+        card = Card.new(id, title)
         cards << card
       end
       cards

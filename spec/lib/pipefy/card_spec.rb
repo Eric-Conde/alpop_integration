@@ -5,7 +5,7 @@ require 'pipefy/card'
 describe Pipefy::Card do
   describe 'initializer' do
     context 'when Pipefy::Card is initialized' do
-      it 'sets the card title' do
+      it 'sets card title' do
         card = build :card
 
         expect(card.title).not_to be_nil
@@ -30,17 +30,17 @@ describe Pipefy::Card do
 
     context 'when .find() is called' do
       it 'retrieves a Card by id' do
-        ticket = Pipefy::Card.find(2122)
+        card = Pipefy::Card.find(2122)
 
-        expect(ticket.id).to eq 2122
+        expect(card.id).to eq 2122
       end
     end
   end
 
   describe '.all' do
     before(:each) do
-      all_cards_by_pipe_id = '{"data": {"cards": {"edges": [{"node": ' + 
-                                 '{"id": "59542804","title": '+ 
+      all_cards_by_pipe_id = '{"data": {"cards": {"edges": [{"node": ' \
+                                 '{"id": "59542804","title": ' \
                                  '"Andreza Sales Ferreira"}}]}}}'
 
       # Stub find card by id to avoid HTTP requests.
@@ -51,15 +51,7 @@ describe Pipefy::Card do
 
     context 'when .all(pipe_id) is called' do
       it 'returns an array of Card objects' do
-        response = '{"data": {"cards": {"edges": [{"node": ' + 
-                   '{"id": "59542804","title": "Andreza Sales Ferreira"}}]}}}'
-
         pipe_id = '1182718'
-        api = 'pipefy'
-        query = "{\"query\":\"{ cards(pipe_id: #{pipe_id}, first: 10)" +
-               "{ edges { node {id title} } } }\"}"
-
- 
         cards = Pipefy::Card.all(pipe_id)
         card = cards.first
 
@@ -72,7 +64,7 @@ describe Pipefy::Card do
   describe '.parse' do
     context 'when .parse(find) is called' do
       it 'returns Card object' do
-        card_json_response = '{"data": {"card": {"id": "60962201","pipe": ' + 
+        card_json_response = '{"data": {"card": {"id": "60962201","pipe": ' \
                              '{"id": "1182718"},"title": "Rosangela "}}}'
 
         card = Pipefy::Card.parse(card_json_response, 'find')

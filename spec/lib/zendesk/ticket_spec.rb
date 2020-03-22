@@ -12,7 +12,7 @@ describe Zendesk::Ticket do
       .to_return(status: 200, body: find_ticket_by_id, headers: {})
   end
 
-  describe 'initializer' do
+  describe 'initialize' do
     context 'when Zendesk::Ticket is initialized' do
       it 'sets the ticket id' do
         ticket = build :ticket

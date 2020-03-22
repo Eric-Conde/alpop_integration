@@ -25,6 +25,6 @@ Projeto escola para ajudar no aprendizado de programação.
 
 ### Glossário
 
-- ***Puma***: é o web server, trata as requisições e respostas. É uma infraestrutura Rack.
-- ***Rack***: é uma interface entre os web servers e as web applications.
-- ***Sinatra***: é o web application. O Middleware vai usar classes derivadas do Sinatra::Base.
+- ***Puma***: web server, trata as requisições e respostas.
+- ***Rack***: interface entre o web server e s web application.
+- ***Sinatra***: é o framework para a web application.

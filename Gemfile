@@ -9,8 +9,9 @@ gem 'pry', git: 'https://github.com/pry/pry.git',
 gem 'puma'
 gem 'rack'
 gem 'rack-jwt'
-gem 'rack-test'
-gem 'rspec'
+gem 'rack-test', group: :test
+gem 'rspec', group: :test
 gem 'rubocop', require: false
+gem 'simplecov', require: false, group: :test
 gem 'sinatra'
-gem 'webmock'
+gem 'webmock', group: :test
