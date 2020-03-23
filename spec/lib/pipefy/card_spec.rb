@@ -5,7 +5,7 @@ require 'pipefy/card'
 describe Pipefy::Card do
   describe 'initializer' do
     context 'when Pipefy::Card is initialized' do
-      it 'sets the card title' do
+      it 'sets card title' do
         card = build :card
 
         expect(card.title).not_to be_nil
@@ -30,17 +30,17 @@ describe Pipefy::Card do
 
     context 'when call .find()' do
       it 'retrieves a Card by id' do
-        ticket = Pipefy::Card.find(2122)
+        card = Pipefy::Card.find(2122)
 
-        expect(ticket.id).to eq 2122
+        expect(card.id).to eq 2122
       end
     end
   end
 
   describe '.all' do
     before(:each) do
-      all_cards_by_pipe_id = '{"data": {"cards": {"edges": [{"node": ' + 
-                                 '{"id": "59542804","title": '+ 
+      all_cards_by_pipe_id = '{"data": {"cards": {"edges": [{"node": ' \
+                                 '{"id": "59542804","title": ' \
                                  '"Andreza Sales Ferreira"}}]}}}'
 
       # Stub find card by id to avoid HTTP requests.
@@ -51,15 +51,7 @@ describe Pipefy::Card do
 
     context 'when call .all(pipe_id)' do
       it 'returns an array of Card objects' do
-        response = '{"data": {"cards": {"edges": [{"node": ' + 
-                   '{"id": "59542804","title": "Andreza Sales Ferreira"}}]}}}'
-
         pipe_id = '1182718'
-        api = 'pipefy'
-        query = "{\"query\":\"{ cards(pipe_id: #{pipe_id}, first: 10)" +
-               "{ edges { node {id title} } } }\"}"
-
- 
         cards = Pipefy::Card.all(pipe_id)
         card = cards.first
 
@@ -69,28 +61,36 @@ describe Pipefy::Card do
     end
   end
 
-  describe '.create' do
-    context 'when call .create(pipe_id)' do
-      it 'creates a card in a pipe' do
-        pipe_id = 1234
-        card = Pipefy::Card.create(pipe_id)
+  describe 'when call .create(pipe_id)' do
+    before(:each) do
+      created_card = '{"data":{"createCard":{"card":{"id":"61492643", '\
+                      '"title":"Card teste Atendimento"}}}}'
+      
+      # Stub find card by id to avoid HTTP requests.
+      stub_request(:post, /api.pipefy.com/)
+        .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
+        .to_return(status: 200, body: created_card, headers: {})
+    end
 
-        expect(card).not_to be_nil
-      end
+    it 'returns card object' do
+      params = { pipe_id: 1182718, due_date: '2020-03-15',
+                 assignee_ids: [975211], phase_id: 7910051,
+                 title: 'Card teste Atendimento', fields_attributes: [] }
+
+      card = Pipefy::Card.create(params)
+      expect(card).not_to be_nil
     end
   end
 
-  describe '.parse' do
-    context 'when .parse(find) is called' do
-      it 'returns Card object' do
-        card_json_response = '{"data": {"card": {"id": "60962201","pipe": ' + 
-                             '{"id": "1182718"},"title": "Rosangela "}}}'
+  describe 'when call  .parse' do
+    it 'returns Card object' do
+      card_json_response = '{"data": {"card": {"id": "60962201","pipe": ' \
+                           '{"id": "1182718"},"title": "Rosangela "}}}'
 
-        card = Pipefy::Card.parse(card_json_response, 'find')
+      card = Pipefy::Card.parse(card_json_response, 'find')
 
-        expect(card.id).not_to be_nil
-        expect(card.title).not_to be_nil
-      end
+      expect(card.id).not_to be_nil
+      expect(card.title).not_to be_nil
     end
   end
 end

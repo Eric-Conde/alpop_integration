@@ -9,13 +9,13 @@ class Middleware
   include Singleton
 
   # Constants.
-  CONFIG_PATH = 'config'
+  CONFIG_PATH = 'config/'
 
   APIS_YML_FILE = 'apis.yml'
-  APIS_YML_PATH = CONFIG_PATH + '/' + APIS_YML_FILE
+  APIS_YML_PATH = CONFIG_PATH + APIS_YML_FILE
 
   ACCESS_TOKENS_YML_FILE = 'access_tokens.yml'
-  ACCESS_TOKENS_YML_PATH = CONFIG_PATH + '/' + ACCESS_TOKENS_YML_FILE
+  ACCESS_TOKENS_YML_PATH = CONFIG_PATH + ACCESS_TOKENS_YML_FILE
 
   # Attr accessors
   attr_accessor :apis, :access_tokens

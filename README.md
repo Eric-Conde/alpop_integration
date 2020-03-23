@@ -15,3 +15,16 @@ Projeto escola para ajudar no aprendizado de programação.
 ### Passo-a-passo da construção
 
 1. Começar sempre pelos testes.
+
+
+### Referências
+
+- https://auth0.com/blog/ruby-authentication-secure-rack-apps-with-jwt/
+- http://sinatrarb.com/intro.html
+- https://developers.pipefy.com/reference#graphql-endpoint
+
+### Glossário
+
+- ***Puma***: web server, trata as requisições e respostas.
+- ***Rack***: interface entre o web server e s web application.
+- ***Sinatra***: é o framework para a web application.
