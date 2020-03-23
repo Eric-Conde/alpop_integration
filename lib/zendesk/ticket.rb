@@ -5,6 +5,7 @@ require 'query_builder'
 
 # Zendesk module.
 module Zendesk
+
   API = 'zendesk'
 
   # Zendesk Ticket ruby object.

@@ -33,18 +33,34 @@ module Pipefy
       response = @middleware.do_request(API, query, 'POST')
       body = response.body
 
-      Pipefy::Card.parse(body, 'all')
+      Card.parse(body, 'all')
     end
 
-    def self.parse(response, method)
+    def self.create(params)
+      query = @query_builder.build(API, 'card', 'create', params)
+      response = @middleware.do_request(API, query, 'POST')
+      body = response.body
+
+      Card.parse(body, 'create')
+    end
+
+    def self.parse(response, card_method)
       response = JSON.parse(response)
-      method = "parse_#{method}"
-      Card.send(method, response)
+      card_method = "parse_#{card_method}"
+      Card.send(card_method, response)
     end
 
     def self.parse_find(response)
       id = response['data']['card']['id']
       title = response['data']['card']['title']
+
+      Card.new(id, title)
+    end
+
+    def self.parse_create(response)
+      card = response['data']['createCard']['card']
+      id = card['id']
+      title = card['title']
 
       Card.new(id, title)
     end

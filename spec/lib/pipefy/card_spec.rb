@@ -28,7 +28,7 @@ describe Pipefy::Card do
         .to_return(status: 200, body: find_card_by_id_response, headers: {})
     end
 
-    context 'when .find() is called' do
+    context 'when call .find()' do
       it 'retrieves a Card by id' do
         card = Pipefy::Card.find(2122)
 
@@ -49,7 +49,7 @@ describe Pipefy::Card do
         .to_return(status: 200, body: all_cards_by_pipe_id, headers: {})
     end
 
-    context 'when .all(pipe_id) is called' do
+    context 'when call .all(pipe_id)' do
       it 'returns an array of Card objects' do
         pipe_id = '1182718'
         cards = Pipefy::Card.all(pipe_id)
@@ -61,17 +61,36 @@ describe Pipefy::Card do
     end
   end
 
-  describe '.parse' do
-    context 'when .parse(find) is called' do
-      it 'returns Card object' do
-        card_json_response = '{"data": {"card": {"id": "60962201","pipe": ' \
-                             '{"id": "1182718"},"title": "Rosangela "}}}'
+  describe 'when call .create(pipe_id)' do
+    before(:each) do
+      created_card = '{"data":{"createCard":{"card":{"id":"61492643", '\
+                      '"title":"Card teste Atendimento"}}}}'
+      
+      # Stub find card by id to avoid HTTP requests.
+      stub_request(:post, /api.pipefy.com/)
+        .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
+        .to_return(status: 200, body: created_card, headers: {})
+    end
 
-        card = Pipefy::Card.parse(card_json_response, 'find')
+    it 'returns card object' do
+      params = { pipe_id: 1182718, due_date: '2020-03-15',
+                 assignee_ids: [975211], phase_id: 7910051,
+                 title: 'Card teste Atendimento', fields_attributes: [] }
 
-        expect(card.id).not_to be_nil
-        expect(card.title).not_to be_nil
-      end
+      card = Pipefy::Card.create(params)
+      expect(card).not_to be_nil
+    end
+  end
+
+  describe 'when call  .parse' do
+    it 'returns Card object' do
+      card_json_response = '{"data": {"card": {"id": "60962201","pipe": ' \
+                           '{"id": "1182718"},"title": "Rosangela "}}}'
+
+      card = Pipefy::Card.parse(card_json_response, 'find')
+
+      expect(card.id).not_to be_nil
+      expect(card.title).not_to be_nil
     end
   end
 end

@@ -6,6 +6,11 @@ queries:
       all:
         query: '{"query":"{ cards(pipe_id: \":pipe_id\", 
         first: 10){ edges { node {id title} } } }"}'
+      create:
+        query: '{"query" : "mutation{createCard(input:{pipe_id: :pipe_id,
+        due_date: \":due_date\", assignee_ids: :assignee_ids, 
+        phase_id: :phase_id, title: \":title\",
+        fields_attributes: :fields_attributes}){card { id title } }}"}'
   zendesk:
     ticket:
       find:
