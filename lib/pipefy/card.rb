@@ -2,13 +2,14 @@
 
 require 'middleware'
 require 'query_builder'
+require 'base'
 
 # Pipefy module.
 module Pipefy
   API = 'pipefy'
 
   # Card is a ruby representation of Pipefy Card.
-  class Card
+  class Card < Base
     attr_accessor :id, :title
 
     @middleware = Middleware.instance
@@ -20,12 +21,8 @@ module Pipefy
     end
 
     def self.find(id)
-      query = @query_builder.build(API, 'card', 'find', { id: id })
-
-      response = @middleware.do_request(API, query, 'POST')
-      body = response.body
-
-      Card.parse(body, 'find')
+      response_body = super(API, 'card', 'find', 'POST', { id: id })
+      Card.parse(response_body, 'find')
     end
 
     def self.all(pipe_id = nil)
