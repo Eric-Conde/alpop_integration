@@ -11,6 +11,9 @@ queries:
         due_date: \":due_date\", assignee_ids: :assignee_ids, 
         phase_id: :phase_id, title: \":title\",
         fields_attributes: :fields_attributes}){card { id title } }}"}'
+    phase:
+      find:
+        query: '{"query":"{ phase(id: \":id\") {phase {id}}}"}'
   zendesk:
     ticket:
       find:
