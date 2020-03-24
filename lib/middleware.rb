@@ -26,18 +26,16 @@ class Middleware
   end
 
   def do_request(api, query, http_method = 'GET')
-    host, authorization_key, content_type = seek_api(api)
+    host, authorization_key, content_type, app_token = seek_api(api)
 
     url = URI(host)
-
     http = Net::HTTP.new(url.host, url.port)
     http.use_ssl = true
 
     request = do_post(url, query) if http_method == 'POST'
     request = do_get(url, query) if http_method == 'GET'
 
-    request['authorization'] = authorization_key
-    request['content-type'] = content_type
+    request = config_header(request, authorization_key, content_type, app_token)
 
     http.request(request)
   end
@@ -61,6 +59,15 @@ class Middleware
 
   private
 
+  def config_header(request, authorization_key, content_type, app_token)
+    request['authorization'] = authorization_key
+    request['content-type'] = content_type
+    request['access_token'] = authorization_key if app_token
+    request['app_token'] = app_token if app_token
+
+    request
+  end
+
   def do_get(url, query)
     url += query
     Net::HTTP::Get.new(url)
@@ -73,10 +80,14 @@ class Middleware
   end
 
   def seek_api(api)
-    host = @apis[api]['config']['host']
-    authorization_key = @access_tokens[api]['key']
-    content_type = @apis[api]['content_type']
+    access_tokens_api = @access_tokens[api]
+    apis_api = @apis[api]
 
-    [host, authorization_key, content_type]
+    host = apis_api['config']['host']
+    authorization_key = access_tokens_api['access_token']
+    content_type = apis_api['content_type']
+    app_token = access_tokens_api['app_token']
+
+    [host, authorization_key, content_type, app_token]
   end
 end
