@@ -2,13 +2,14 @@
 
 require 'middleware'
 require 'query_builder'
+require 'base'
 
 # Zendesk module.
 module Zendesk
   API = 'zendesk'
 
   # Zendesk Ticket ruby object.
-  class Ticket
+  class Ticket < Base
     attr_accessor :id
 
     @middleware = Middleware.instance
@@ -19,10 +20,8 @@ module Zendesk
     end
 
     def self.find(id)
-      query = @query_builder.build(API, 'ticket', 'find', { id: id })
-      response = @middleware.do_request(API, query, 'GET')
-      body = response.body
-      Ticket.parse(body, 'find')
+      response_body = super(API, 'ticket', 'find', 'GET', { id: id })
+      Ticket.parse(response_body, 'find')
     end
 
     def self.parse(response, method)

@@ -2,13 +2,14 @@
 
 require 'middleware'
 require 'query_builder'
+require 'base'
 
 # Pipefy module.
 module Pipefy
   API = 'pipefy'
 
   # Phase is a ruby representation of Pipefy Phase.
-  class Phase
+  class Phase < Base
     attr_accessor :id
 
     @middleware = Middleware.instance
@@ -19,12 +20,8 @@ module Pipefy
     end
 
     def self.find(id)
-      query = @query_builder.build(API, 'phase', 'find', { id: id })
-
-      response = @middleware.do_request(API, query, 'POST')
-      body = response.body
-
-      Phase.parse(body, 'find')
+      response_body = super(API, 'phase', 'find', 'POST', { id: id })
+      Phase.parse(response_body, 'find')
     end
 
     def self.parse(response, card_method)
