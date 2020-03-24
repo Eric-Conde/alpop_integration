@@ -1,3 +1,4 @@
 config/access_tokens.yml
 coverage/.resultset.json
 coverage/index.html
+coverage/.last_run.json
