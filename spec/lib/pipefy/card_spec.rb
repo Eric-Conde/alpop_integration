@@ -65,7 +65,7 @@ describe Pipefy::Card do
     before(:each) do
       created_card = '{"data":{"createCard":{"card":{"id":"61492643", '\
                       '"title":"Card teste Atendimento"}}}}'
-      
+
       # Stub find card by id to avoid HTTP requests.
       stub_request(:post, /api.pipefy.com/)
         .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
@@ -73,8 +73,8 @@ describe Pipefy::Card do
     end
 
     it 'returns card object' do
-      params = { pipe_id: 1182718, due_date: '2020-03-15',
-                 assignee_ids: [975211], phase_id: 7910051,
+      params = { pipe_id: '1182718', due_date: '2020-03-15',
+                 assignee_ids: ['975211'], phase_id: '7910051',
                  title: 'Card teste Atendimento', fields_attributes: [] }
 
       card = Pipefy::Card.create(params)
