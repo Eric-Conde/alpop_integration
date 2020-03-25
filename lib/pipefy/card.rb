@@ -6,10 +6,10 @@ require 'base'
 
 # Pipefy module.
 module Pipefy
+  API = 'pipefy'
+  
   # Card is a ruby representation of Pipefy Card.
-  class Card < Base
-    API = 'pipefy'
-    
+  class Card < Base    
     attr_accessor :id, :title
 
     @middleware = Middleware.instance
