@@ -20,7 +20,7 @@ module Pipefy
     end
 
     def self.find(id)
-      response_body = super(API, 'phase', 'find', 'POST', { id: id })
+      response_body = super('find', 'POST', { id: id })
       Phase.parse(response_body, 'find')
     end
 
