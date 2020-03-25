@@ -18,3 +18,7 @@ queries:
     ticket:
       find:
         query: 'tickets/:id'
+  superlogica:
+    cobranca:
+      find:
+        query: 'financeiro/cobranca?id=:id'

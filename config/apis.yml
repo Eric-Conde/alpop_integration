@@ -13,6 +13,6 @@ apis:
 
   superlogica:
     config:
-      host: https://api.superlogica.com
+      host: https://api.superlogica.net/v2/
       authorization: access_token
       content_type: application/json
