@@ -37,7 +37,6 @@ module Superlogica
     def self.parse_find(response)
       id = response[0]['compo_recebimento'][0]['id_boleto_comp']
       st_nome_sac = response[0]['st_nome_sac']
-      puts st_nome_sac
       Cobranca.new(id, st_nome_sac)
     end
   end
