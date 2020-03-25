@@ -20,7 +20,7 @@ module Zendesk
     end
 
     def self.find(id)
-      response_body = super(API, 'ticket', 'find', 'GET', { id: id })
+      response_body = super('find', 'GET', { id: id })
       Ticket.parse(response_body, 'find')
     end
 

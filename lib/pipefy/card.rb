@@ -6,10 +6,10 @@ require 'base'
 
 # Pipefy module.
 module Pipefy
-  API = 'pipefy'
-
   # Card is a ruby representation of Pipefy Card.
   class Card < Base
+    API = 'pipefy'
+    
     attr_accessor :id, :title
 
     @middleware = Middleware.instance
@@ -21,7 +21,7 @@ module Pipefy
     end
 
     def self.find(id)
-      response_body = super(API, 'card', 'find', 'POST', { id: id })
+      response_body = super('find', 'POST', { id: id })
       Card.parse(response_body, 'find')
     end
 

@@ -82,7 +82,7 @@ describe Pipefy::Card do
     end
   end
 
-  describe 'when call  .parse' do
+  describe 'when call .parse' do
     it 'returns Card object' do
       card_json_response = '{"data": {"card": {"id": "60962201","pipe": ' \
                            '{"id": "1182718"},"title": "Rosangela "}}}'
