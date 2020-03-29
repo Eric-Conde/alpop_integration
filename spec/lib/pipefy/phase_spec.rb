@@ -7,7 +7,6 @@ describe Pipefy::Phase do
     context 'when Pipefy::Phase is initialized' do
       it 'sets phase id' do
         phase = build :phase
-        
         expect(phase.id).not_to be_nil
       end
     end
@@ -29,6 +28,6 @@ describe Pipefy::Phase do
 
         expect(phase.id).to eq 2122
       end
-    end 
+    end
   end
 end
