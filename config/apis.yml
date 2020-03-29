@@ -16,3 +16,9 @@ apis:
       host: https://api.superlogica.net/v2/
       authorization: access_token
       content_type: application/json
+
+  google_sheet:
+    config:
+      host: https://sheets.googleapis.com/v4/spreadsheets/
+      authorization: access_token
+      content_type: application/json

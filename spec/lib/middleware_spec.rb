@@ -26,18 +26,18 @@ describe Middleware do
 
     it 'must load access tokens' do
       # Load YML.
-      access_tokens_yml_file = File.read('config/access_tokens.yml')
-      access_tokens_yml = YAML.safe_load(access_tokens_yml_file)
+      credentials_yml_file = File.read('config/credentials.yml')
+      credentials_yml = YAML.safe_load(credentials_yml_file)
       # Load YML as a Hash.
-      yml_seriealized = access_tokens_yml.inspect
-      access_tokens = JSON.parse yml_seriealized.gsub('=>', ':')
+      yml_seriealized = credentials_yml.inspect
+      credentials = JSON.parse yml_seriealized.gsub('=>', ':')
 
       # Expected values.
-      expected_loaded_access_tokens = access_tokens['access_tokens'].size
+      expected_loaded_credentials = credentials['credentials'].size
 
       # Expectations.
-      middleware_access_tokens = middleware.access_tokens
-      expect(middleware_access_tokens.size).to eq expected_loaded_access_tokens
+      middleware_credentials = middleware.credentials
+      expect(middleware_credentials.size).to eq expected_loaded_credentials
     end
 
     it 'is a singleton' do
