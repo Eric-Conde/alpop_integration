@@ -6,10 +6,10 @@ require 'base'
 
 # Zendesk module.
 module Zendesk
-  # Zendesk Ticket ruby object.
-  class Ticket < Base
-    API = 'zendesk'
+  API = 'zendesk'
 
+  # Zendesk User ruby object.
+  class User < Base
     attr_accessor :id
 
     @middleware = Middleware.instance
@@ -20,19 +20,19 @@ module Zendesk
     end
 
     def self.find(id)
-      response_body = super('find', 'GET', { id: id })
-      Ticket.parse(response_body, 'find')
+      respose_body = super('find', 'GET', { id: id })
+      User.parse(respose_body, 'find')
     end
 
     def self.parse(response, method)
       response = JSON.parse(response)
       method = "parse_#{method}"
-      Ticket.send(method, response)
+      User.send(method, response)
     end
 
     def self.parse_find(response)
-      ticket_id = response['ticket']['id']
-      Ticket.new(ticket_id)
+      user_id = response['user'] ['id']
+      User.new(user_id)
     end
   end
 end

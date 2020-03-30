@@ -1,16 +1,14 @@
 # frozen_string_literal: true
 
-require 'yaml'
-
 # Build queries.
 class QueryBuilder
   # Constants.
   CONFIG_PATH = 'config/'
-  QUERY_YML_FILE = 'queries.yml'
-  QUERY_YML_PATH = CONFIG_PATH + QUERY_YML_FILE
+  QUERY_FILE = 'queries.yml'
+  QUERY_PATH = CONFIG_PATH + QUERY_FILE
 
   def build(api = nil, object = nil, api_method = nil, params = nil)
-    queries = QueryBuilder.yml2json(QUERY_YML_PATH)
+    queries = QueryBuilder.yml2json(QUERY_PATH)
     api_json = queries['queries'][api]
     object_json = api_json[object]
     api_method_json = object_json[api_method]

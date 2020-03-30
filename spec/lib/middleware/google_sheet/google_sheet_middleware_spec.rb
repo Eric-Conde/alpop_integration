@@ -4,12 +4,11 @@ require 'middleware/google_sheet/google_sheet_middleware'
 require 'yaml'
 
 describe GoogleSheetMiddleware do
-
   let(:google_sheet_middleware) { GoogleSheetMiddleware.instance }
 
   context 'initializer' do
     it 'calls super' do
-      expect(google_sheet_middleware.apis).not_to be_nil
+      expect(google_sheet_middleware.catalog).not_to be_nil
       expect(google_sheet_middleware.credentials).not_to be_nil
     end
   end

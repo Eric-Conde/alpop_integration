@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
+require 'base'
 require 'middleware'
 require 'query_builder'
 
 # Superlogica module.
 module Superlogica
-  API = 'superlogica'
-
   # Cobranca is a ruby representation of Superlogica Cobranca.
-  class Cobranca
+  class Cobranca < Base
+    API = 'superlogica'
+
     attr_accessor :id, :st_nome_sac
 
     @middleware = Middleware.instance
@@ -20,12 +21,8 @@ module Superlogica
     end
 
     def self.find(id)
-      query = @query_builder.build(API, 'cobranca', 'find', { id: id })
-
-      response = @middleware.do_request(API, query, 'GET')
-      body = response.body
-
-      Cobranca.parse(body, 'find')
+      response_body = super('find', 'GET', { id: id })
+      Cobranca.parse(response_body, 'find')
     end
 
     def self.parse(response, cobranca_method)

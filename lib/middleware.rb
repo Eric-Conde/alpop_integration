@@ -1,29 +1,25 @@
 # frozen_string_literal: true
 
-require 'singleton'
-require 'yaml'
-require 'json'
-require 'uri'
-require 'net/http'
+require 'middleware_helpers'
 
-# Middleware is responsible for credentials, apis and requests.
+# Middleware is responsible for credentials, API catalog and request/response.
 class Middleware
   include Singleton
 
   # Constants.
   CONFIG_PATH = 'config/'
 
-  APIS_YML_FILE = 'apis.yml'
-  APIS_YML_PATH = CONFIG_PATH + APIS_YML_FILE
+  CATALOG_FILE = 'catalog.yml'
+  CATALOG_PATH = CONFIG_PATH + CATALOG_FILE
 
   CREDENTIALS = 'credentials.yml'
   CREDENTIALS_PATH = CONFIG_PATH + CREDENTIALS
 
   # Attr accessors
-  attr_accessor :apis, :credentials
+  attr_accessor :catalog, :credentials
 
   def initialize
-    @apis = Middleware.load_apis
+    @catalog = Middleware.load_catalog
     @credentials = Middleware.load_credentials
   end
 
@@ -42,21 +38,14 @@ class Middleware
   end
 
   class << self
-    def load_apis
-      apis = yml2hash(APIS_YML_PATH)
-      apis['apis']
+    def load_catalog
+      catalog = yml2hash(CATALOG_PATH)
+      catalog['catalog']
     end
 
     def load_credentials
       credentials = yml2hash(CREDENTIALS_PATH)
       credentials['credentials']
-    end
-
-    def yml2hash(yml_path)
-      file = File.read(yml_path)
-      yml_file = YAML.safe_load(file)
-      yml_seriealized = yml_file.inspect
-      JSON.parse yml_seriealized.gsub('=>', ':')
     end
   end
 
@@ -83,11 +72,11 @@ class Middleware
 
   def seek_api(api)
     credentials_api = @credentials[api]
-    apis_api = @apis[api]
+    catalog_api = @catalog[api]
 
-    host = apis_api['config']['host']
+    host = catalog_api['config']['host']
     access_token = credentials_api['access_token']
-    content_type = apis_api['content_type']
+    content_type = credentials_api['content_type']
     app_token = credentials_api['app_token']
 
     [host, access_token, content_type, app_token]

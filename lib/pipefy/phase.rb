@@ -6,10 +6,10 @@ require 'base'
 
 # Pipefy module.
 module Pipefy
-  API = 'pipefy'
-
   # Phase is a ruby representation of Pipefy Phase.
   class Phase < Base
+    API = 'pipefy'
+
     attr_accessor :id
 
     @middleware = Middleware.instance

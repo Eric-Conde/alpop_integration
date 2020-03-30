@@ -2,3 +2,4 @@ config/credentials.yml
 coverage/.resultset.json
 coverage/index.html
 coverage/.last_run.json
+.DS_Store
