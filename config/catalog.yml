@@ -1,4 +1,4 @@
-apis:
+catalog:
   pipefy: 
     config:
       host: https://api.pipefy.com/graphq

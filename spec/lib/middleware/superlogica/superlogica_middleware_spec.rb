@@ -8,7 +8,7 @@ describe SuperlogicaMiddleware do
 
   context 'initializer' do
     it 'calls super' do
-      expect(superlogica_middleware.apis).not_to be_nil
+      expect(superlogica_middleware.catalog).not_to be_nil
       expect(superlogica_middleware.credentials).not_to be_nil
     end
   end
@@ -27,15 +27,15 @@ describe SuperlogicaMiddleware do
 
     before(:each) do
       stub_request(:get, "https://api.superlogica.net/v2/")
-        .with(headers: { 
-          'Accept' => '*/*',
-          'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Access-Token' => superlogica['access_token'],
-          'App-Token' => superlogica['app_token'],
-          'Authorization' => credentials['superlogica']['access_token'],
-          'Host' => 'api.superlogica.net',
-          'User-Agent' => 'Ruby'
-         }).to_return(status: 200, body: "", headers: {})
+        .with(headers: {
+                'Accept' => '*/*',
+                'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+                'Access-Token' => superlogica['access_token'],
+                'App-Token' => superlogica['app_token'],
+                'Authorization' => credentials['superlogica']['access_token'],
+                'Host' => 'api.superlogica.net',
+                'User-Agent' => 'Ruby'
+              }).to_return(status: 200, body: '', headers: {})
     end
 
     it 'does a GET request' do

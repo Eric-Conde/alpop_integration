@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
+require 'base'
 require 'middleware'
 require 'query_builder'
-require 'base'
 
 # Pipefy module.
 module Pipefy
-  API = 'pipefy'
-
   # Card is a ruby representation of Pipefy Card.
   class Card < Base
+    API = 'pipefy'
+
     attr_accessor :id, :title
 
     @middleware = Middleware.instance
