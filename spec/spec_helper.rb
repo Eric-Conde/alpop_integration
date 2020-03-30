@@ -4,14 +4,17 @@ require 'simplecov'
 SimpleCov.start
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'helpers'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
 require 'rspec'
 require 'support/factory_bot'
 require 'webmock/rspec'
 require 'rack/test'
+
 require File.join(File.dirname(__FILE__), '../lib/api/v1/zendesk', 'event')
 require File.join(File.dirname(__FILE__), '../lib/api/v1/pipefy', 'event')
+
 
 ENV['RACK_ENV'] = 'test'
 

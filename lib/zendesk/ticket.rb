@@ -6,10 +6,10 @@ require 'base'
 
 # Zendesk module.
 module Zendesk
-  API = 'zendesk'
-
   # Zendesk Ticket ruby object.
   class Ticket < Base
+    API = 'zendesk'
+
     attr_accessor :id
 
     @middleware = Middleware.instance

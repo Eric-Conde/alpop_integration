@@ -9,19 +9,19 @@ describe Middleware do
   context 'initializer' do
     it 'must load endpoints configs' do
       # Load YML.
-      apis_yml_file = File.read('config/apis.yml')
-      apis_yml = YAML.safe_load(apis_yml_file)
+      catalog_yml_file = File.read('config/catalog.yml')
+      catalog_yml = YAML.safe_load(catalog_yml_file)
 
       # Load YML as a Hash.
-      yml_seriealized = apis_yml.inspect
-      apis = JSON.parse yml_seriealized.gsub('=>', ':')
+      yml_seriealized = catalog_yml.inspect
+      catalog = JSON.parse yml_seriealized.gsub('=>', ':')
 
       # Expected values.
-      expected_loaded_apis = apis['apis'].size
+      expected_loaded_apis = catalog['catalog'].size
 
       # Expectations.
-      middleware_apis = middleware.apis
-      expect(middleware_apis.size).to eq expected_loaded_apis
+      middleware_catalog = middleware.catalog
+      expect(middleware_catalog.size).to eq expected_loaded_apis
     end
 
     it 'must load access tokens' do
