@@ -18,6 +18,9 @@ queries:
     ticket:
       find:
         query: 'tickets/:id'
+    user:
+      find:
+        query: 'user/:id'
   superlogica:
     cobranca:
       find:
