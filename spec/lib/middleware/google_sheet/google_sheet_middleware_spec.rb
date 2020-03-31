@@ -35,13 +35,7 @@ describe GoogleSheetMiddleware do
                 "key=#{key}"
       
       stub_request(:get, api_url)
-        .with(headers: {
-          'Accept' => '*/*',
-          'Accept-Encoding' => 'gzip,deflate',
-          'Content-Type' => 'application/x-www-form-urlencoded',
-          'User-Agent' => 'alpop_integration/0.0.0 google-api-ruby-client/0.37.2 Mac OS X/10.13.6 (gzip)',
-          'X-Goog-Api-Client' => 'gl-ruby/2.7.0 gdcl/0.37.2'
-        }).to_return(status: 200, body: '{ "code": 200 }', headers: {})
+        .to_return(status: 200, body: '{ "code": 200 }', headers: {})
     end
 
     it 'does a GET request' do
