@@ -1,4 +1,11 @@
 language: ruby
 rvm:
  - 2.7.0
- 
+
+# safelist
+branches:
+  only:
+  - master
+  - dev
+  - qa
+  
