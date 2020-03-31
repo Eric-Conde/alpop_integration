@@ -1,4 +1,4 @@
-## README [![Build Status](https://travis-ci.com/caiena/alpop_integration.svg?branch=master)](https://travis-ci.com/caiena/alpop_integration) [![Maintainability](https://api.codeclimate.com/v1/badges/a154e02e184f9b6072f9/maintainability)](https://codeclimate.com/github/caiena/alpop_integration/maintainability)
+## README [![Build Status](https://travis-ci.com/caiena/alpop_integration.svg?branch=master)](https://travis-ci.com/caiena/alpop_integration) [![Maintainability](https://api.codeclimate.com/v1/badges/a154e02e184f9b6072f9/maintainability)](https://codeclimate.com/github/caiena/alpop_integration/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/a154e02e184f9b6072f9/test_coverage)](https://codeclimate.com/github/caiena/alpop_integration/test_coverage)
 
 ### Objetivo
 
