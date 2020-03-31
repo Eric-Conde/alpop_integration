@@ -11,7 +11,7 @@ group :test, :development do
   gem 'rack-test'
   gem 'rspec'
   gem 'rubocop', require: false
-  gem 'simplecov', require: false, group: :test
+  gem 'simplecov', '0.17', require: false, group: :test
   gem 'webmock', group: :test
 end
 
