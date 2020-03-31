@@ -1,4 +1,4 @@
-## README
+## README [![Build Status](https://travis-ci.com/caiena/alpop_integration.svg?branch=master)](https://travis-ci.com/caiena/alpop_integration)
 
 ### Objetivo
 
