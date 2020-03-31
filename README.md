@@ -1,4 +1,4 @@
-## README [![Build Status](https://travis-ci.com/caiena/alpop_integration.svg?branch=master)](https://travis-ci.com/caiena/alpop_integration) [![Maintainability](https://https://codeclimate.com/github/caiena/alpop_integration/maintainability)](https://https://codeclimate.com/github/caiena/alpop_integration/maintainability)
+## README [![Build Status](https://travis-ci.com/caiena/alpop_integration.svg?branch=master)](https://travis-ci.com/caiena/alpop_integration)
 
 ### Objetivo
 
