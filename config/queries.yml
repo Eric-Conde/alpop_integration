@@ -25,4 +25,6 @@ queries:
     cobranca:
       find:
         query: 'cobrancas?id=:id'
-        
+    contrato:
+      find:
+        query: 'contratos?id=:id&comDadosDosProprietarios=1&comDadosDosInquilinos=1'
