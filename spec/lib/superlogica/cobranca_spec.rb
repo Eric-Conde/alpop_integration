@@ -3,6 +3,16 @@
 require 'superlogica/cobranca'
 
 describe Superlogica::Cobranca do
+  
+  let(:find_cobranca_by_id) do
+    '[{ "id_sacado_sac": "16028",
+    "st_nomeref_sac": "Integracao",
+    "st_nome_sac": "Integracao", "compo_recebimento": [{
+    "st_descricao_prd": "Adesão", "st_mesano_comp": "07/01/2019",
+    "st_descricao_comp": "","st_valor_comp": "500.00",
+    "id_boleto_comp": "651","id_sacado_comp": "16028" }] }]'
+  end
+
   describe 'initializer' do
     context 'when Superlogica::Cobranca is initialized' do
       it 'sets cobranca name' do
@@ -20,17 +30,18 @@ describe Superlogica::Cobranca do
 
   describe '.find' do
     before(:each) do
-      find_cobranca_by_id = '[{ "id_sacado_sac": "16028",
-            "st_nomeref_sac": "Integracao",
-            "st_nome_sac": "Integracao", "compo_recebimento": [{
-            "st_descricao_prd": "Adesão", "st_mesano_comp": "07/01/2019",
-            "st_descricao_comp": "","st_valor_comp": "500.00",
-            "id_boleto_comp": "651","id_sacado_comp": "16028" }] }]'
-
       # Stub find cobranca by id to avoid HTTP requests.
-      stub_request(:get, 'https://api.superlogica.net/v2/financeiro/cobranca?id=651')
-        .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
-        .to_return(status: 200, body: find_cobranca_by_id, headers: {})
+      stub_request(:get, "https://apps.superlogica.net:80/" \
+                         "imobiliaria/api/cobrancas?id=651")
+          .with(headers: {
+            'Accept'=>'*/*',
+            'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+            'Access-Token'=>'put_here_your_credentials',
+            'Authorization'=>'put_here_your_credentials',
+            'Host'=>'apps.superlogica.net',
+            'User-Agent'=>'Ruby'
+          }).
+         to_return(status: 200, body: find_cobranca_by_id, headers: {})
     end
 
     context 'when call .find()' do
@@ -44,13 +55,6 @@ describe Superlogica::Cobranca do
 
   describe 'when call .parse' do
     it 'returns Cobranca object' do
-      find_cobranca_by_id = '[{ "id_sacado_sac": "16028",
-            "st_nomeref_sac": "Integracao",
-            "st_nome_sac": "Integracao", "compo_recebimento": [{
-            "st_descricao_prd": "Adesão", "st_mesano_comp": "07/01/2019",
-            "st_descricao_comp": "","st_valor_comp": "500.00",
-            "id_boleto_comp": "651","id_sacado_comp": "16028" }] }]'
-
       cobranca = Superlogica::Cobranca.parse(find_cobranca_by_id, 'find')
 
       expect(cobranca.id).not_to be_nil
