@@ -18,7 +18,7 @@ describe Pipefy::Card do
     end
   end
 
-  describe '.find' do
+  describe '.find(id)' do
     before(:each) do
       find_card_by_id_response = '{"data":{"card":{"id":2122}}}'
 
@@ -28,7 +28,7 @@ describe Pipefy::Card do
         .to_return(status: 200, body: find_card_by_id_response, headers: {})
     end
 
-    context 'when call .find()' do
+    context 'when call .find(id)' do
       it 'retrieves a Card by id' do
         card = Pipefy::Card.find(2122)
 
