@@ -24,4 +24,5 @@ queries:
   superlogica:
     cobranca:
       find:
-        query: 'financeiro/cobranca?id=:id'
+        query: 'cobrancas?id=:id'
+        
