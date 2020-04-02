@@ -66,13 +66,4 @@ describe Superlogica::Contrato do
       end
     end
   end
-
-  describe 'when call .parse' do
-    it 'returns Contrato object' do
-      contrato_json_response = find_contrato_by_id_reponse
-      contrato = Superlogica::Contrato.parse(contrato_json_response, 'find')
-
-      expect(contrato.id).not_to be_nil
-    end
-  end
 end

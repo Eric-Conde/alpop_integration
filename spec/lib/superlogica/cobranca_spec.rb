@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'superlogica/cobranca'
+require 'parser'
 
 describe Superlogica::Cobranca do
   
@@ -15,12 +16,6 @@ describe Superlogica::Cobranca do
 
   describe 'initializer' do
     context 'when Superlogica::Cobranca is initialized' do
-      it 'sets cobranca name' do
-        cobranca = build :cobranca
-
-        expect(cobranca.st_nome_sac).not_to be_nil
-      end
-
       it 'sets the cobranca id' do
         cobranca = build :cobranca
         expect(cobranca.id).not_to be_nil
@@ -48,17 +43,8 @@ describe Superlogica::Cobranca do
       it 'retrieves a Cobranca by id' do
         cobranca = Superlogica::Cobranca.find(651)
 
-        expect(cobranca.id).to eq '651'
+        expect(cobranca.id).to eq 651
       end
-    end
-  end
-
-  describe 'when call .parse' do
-    it 'returns Cobranca object' do
-      cobranca = Superlogica::Cobranca.parse(find_cobranca_by_id, 'find')
-
-      expect(cobranca.id).not_to be_nil
-      expect(cobranca.st_nome_sac).not_to be_nil
     end
   end
 end

@@ -3,11 +3,13 @@
 require 'base'
 require 'middleware'
 require 'query_builder'
+require 'parser/superlogica_contrato_parser'
 
 # Superlogica module.
 module Superlogica
   # Contrato is a ruby representation of Superlogica Contrato.
   class Contrato < Base
+    API = 'superlogica'
 
     attr_accessor :id
 
@@ -19,20 +21,8 @@ module Superlogica
     end
 
     def self.find(id)
-      response_body = super('find', 'GET', { id: id })
-      Contrato.parse(response_body, 'find')
-    end
-
-    def self.parse(response, contrato_method)
-      response = JSON.parse(response)
-      contrato_method = "parse_#{contrato_method}"
-      Contrato.send(contrato_method, response)
-    end
-
-    def self.parse_find(response)
-      id = response['data'][0]['id_contrato_con'].to_i
-
-      Contrato.new(id)
+      body = super('find', 'GET', { id: id })
+      Parser.parse(API, 'Contrato', body, 'find')
     end
   end
 end

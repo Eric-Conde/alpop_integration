@@ -22,8 +22,8 @@ module Pipefy
     end
 
     def self.find(id)
-      response_body = super('find', 'POST', { id: id })
-      Parser.parse(API, 'Card', response_body, 'find')
+      body = super('find', 'POST', { id: id })
+      Parser.parse(API, 'Card', body, 'find')
     end
 
     def self.all(pipe_id = nil)

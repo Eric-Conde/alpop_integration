@@ -3,6 +3,7 @@
 require 'base'
 require 'middleware'
 require 'query_builder'
+require 'parser/superlogica_cobranca_parser'
 
 # Superlogica module.
 module Superlogica
@@ -10,31 +11,18 @@ module Superlogica
   class Cobranca < Base
     API = 'superlogica'
 
-    attr_accessor :id, :st_nome_sac
+    attr_accessor :id
 
     @middleware = Middleware.instance
     @query_builder = QueryBuilder.new
 
-    def initialize(id = nil, st_nome_sac = nil)
-      @st_nome_sac = st_nome_sac
+    def initialize(id = nil)
       @id = id
     end
 
     def self.find(id)
-      response_body = super('find', 'GET', { id: id })
-      Cobranca.parse(response_body, 'find')
-    end
-
-    def self.parse(response, cobranca_method)
-      response = JSON.parse(response)
-      cobranca_method = "parse_#{cobranca_method}"
-      Cobranca.send(cobranca_method, response)
-    end
-
-    def self.parse_find(response)
-      id = response[0]['compo_recebimento'][0]['id_boleto_comp']
-      st_nome_sac = response[0]['st_nome_sac']
-      Cobranca.new(id, st_nome_sac)
+      body = super('find', 'GET', { id: id })
+      Parser.parse(API, 'Cobranca', body, 'find')
     end
   end
 end

@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
+require 'base'
 require 'middleware'
 require 'query_builder'
-require 'base'
+require 'parser/pipefy_phase_parser'
 
 # Pipefy module.
 module Pipefy
@@ -21,19 +22,7 @@ module Pipefy
 
     def self.find(id)
       response_body = super('find', 'POST', { id: id })
-      Phase.parse(response_body, 'find')
-    end
-
-    def self.parse(response, card_method)
-      response = JSON.parse(response)
-      card_method = "parse_#{card_method}"
-      Phase.send(card_method, response)
-    end
-
-    def self.parse_find(response)
-      id = response['data']['phase']['id']
-
-      Phase.new(id)
+      Parser.parse(API, 'Phase', response_body, 'find')
     end
   end
 end
