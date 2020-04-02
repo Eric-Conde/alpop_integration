@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'pipefy/card'
+require 'parser'
 
 describe Pipefy::Card do
   describe 'initializer' do
@@ -79,18 +80,6 @@ describe Pipefy::Card do
 
       card = Pipefy::Card.create(params)
       expect(card).not_to be_nil
-    end
-  end
-
-  describe 'when call .parse' do
-    it 'returns Card object' do
-      card_json_response = '{"data": {"card": {"id": "60962201","pipe": ' \
-                           '{"id": "1182718"},"title": "Rosangela "}}}'
-
-      card = Pipefy::Card.parse(card_json_response, 'find')
-
-      expect(card.id).not_to be_nil
-      expect(card.title).not_to be_nil
     end
   end
 end

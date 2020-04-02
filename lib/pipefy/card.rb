@@ -3,6 +3,7 @@
 require 'base'
 require 'middleware'
 require 'query_builder'
+require 'parser/pipefy_card_parser'
 
 # Pipefy module.
 module Pipefy
@@ -22,7 +23,7 @@ module Pipefy
 
     def self.find(id)
       response_body = super('find', 'POST', { id: id })
-      Card.parse(response_body, 'find')
+      Parser.parse(API, 'Card', response_body, 'find')
     end
 
     def self.all(pipe_id = nil)
@@ -30,7 +31,7 @@ module Pipefy
       response = @middleware.do_request(API, query, 'POST')
       body = response.body
 
-      Card.parse(body, 'all')
+      Parser.parse(API, 'Card', body, 'all')
     end
 
     def self.create(params)
@@ -38,41 +39,7 @@ module Pipefy
       response = @middleware.do_request(API, query, 'POST')
       body = response.body
 
-      Card.parse(body, 'create')
-    end
-
-    def self.parse(response, card_method)
-      response = JSON.parse(response)
-      card_method = "parse_#{card_method}"
-      Card.send(card_method, response)
-    end
-
-    def self.parse_find(response)
-      id = response['data']['card']['id']
-      title = response['data']['card']['title']
-
-      Card.new(id, title)
-    end
-
-    def self.parse_create(response)
-      card = response['data']['createCard']['card']
-      id = card['id']
-      title = card['title']
-
-      Card.new(id, title)
-    end
-
-    def self.parse_all(response)
-      nodes = response['data']['cards']['edges']
-      cards = []
-
-      nodes.each do |node|
-        id = node['id']
-        title = node['title']
-        card = Card.new(id, title)
-        cards << card
-      end
-      cards
+      Parser.parse(API, 'Card', body, 'create')
     end
   end
 end
