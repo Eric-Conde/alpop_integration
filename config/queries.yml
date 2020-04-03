@@ -27,6 +27,8 @@ queries:
         query: 'cobrancas?id=:id'
       all:
         query: 'cobrancas'
+      atrasadas:
+        query: 'cobrancas?status=pendentes'
 
     contrato:
       find:

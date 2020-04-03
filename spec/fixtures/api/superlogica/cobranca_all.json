@@ -1,0 +1,19 @@
+{
+  "status": "200",
+  "session": "vim1j791q3hgdqfstk7fe0ckp1",
+  "msg": "",
+  "data": [
+    [{
+      "id_sacado_sac": "161",
+      "st_nomeref_sac": "F\u00e1bio Alessandro Bonfim Vilas Boas",
+      "st_nome_sac": "F\u00e1bio Alessandro Bonfim Vilas Boas",
+      "compo_recebimento": [{"id_boleto_comp":"1091"}]
+    }, {
+      "id_sacado_sac": "201",
+      "st_nomeref_sac": "Lucas Aparecido Ribeiro",
+      "st_nome_sac": "Lucas Aparecido Ribeiro",
+      "compo_recebimento": [{"id_boleto_comp":"1091"}]
+    }]
+  ],
+    "executiontime": "0.1561s"
+}

@@ -50,29 +50,11 @@ describe Superlogica::Cobranca do
 
   describe '.all' do
     context 'when call .all' do
-      let(:cobranca_json_response) do
-        '{
-          "status": "200",
-          "session": "vim1j791q3hgdqfstk7fe0ckp1",
-          "msg": "",
-          "data": [
-            [{
-              "id_sacado_sac": "161",
-              "st_nomeref_sac": "F\u00e1bio Alessandro Bonfim Vilas Boas",
-              "st_nome_sac": "F\u00e1bio Alessandro Bonfim Vilas Boas",
-              "compo_recebimento": [{"id_boleto_comp":"1091"}]
-            }, {
-              "id_sacado_sac": "201",
-              "st_nomeref_sac": "Lucas Aparecido Ribeiro",
-              "st_nome_sac": "Lucas Aparecido Ribeiro",
-              "compo_recebimento": [{"id_boleto_comp":"1091"}]
-            }]
-          ],
-            "executiontime": "0.1561s"
-        }'
-      end
-
-      before(:each) do
+      
+      cobranca_json_response = File.read("spec/fixtures/api/superlogica/" \
+                                         "cobranca_all.json")
+      
+      before(:each) do        
         stub_request(:get, 
             "https://apps.superlogica.net:80/imobiliaria/api/cobrancas")
           .with(
@@ -94,5 +76,34 @@ describe Superlogica::Cobranca do
         expect(cobranca.class).to eq Superlogica::Cobranca
       end
     end
+  end
+
+  describe '.atrasadas' do
+    before(:each) do
+      atrasadas_response = File.read("spec/fixtures/api/superlogica/" \
+                                     "cobranca_atrasadas.json")
+
+      stub_request(:get, "https://apps.superlogica.net:80/imobiliaria/api/" \
+                         "cobrancas?status=pendentes")
+        .with(
+          headers: {
+            'Accept'=>'*/*',
+            'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+            'Access-Token'=>'put_here_your_credentials',
+            'Authorization'=>'put_here_your_credentials',
+            'Host'=>'apps.superlogica.net',
+            'User-Agent'=>'Ruby'
+          })
+        .to_return(status: 200, body: atrasadas_response, headers: {})
+      end
+
+    context 'when call atrasadas' do
+      it 'returns cobrancas atrasadas' do
+        cobrancas_atrasadas = Superlogica::Cobranca.atrasadas
+        cobranca_atrasada = cobrancas_atrasadas.first
+        expect(cobranca_atrasada.id).not_to be_nil
+        expect(cobranca_atrasada.vencimento).not_to be_nil
+      end
+    end 
   end
 end

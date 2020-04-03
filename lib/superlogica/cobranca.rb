@@ -11,7 +11,7 @@ module Superlogica
   class Cobranca < Base
     API = 'superlogica'
 
-    attr_accessor :id
+    attr_accessor :id, :vencimento
 
     @middleware = Middleware.instance
     @query_builder = QueryBuilder.new
@@ -31,6 +31,14 @@ module Superlogica
       body = response.body
 
       Parser.parse(API, 'Cobranca', body, 'all')
+    end
+
+    def self.atrasadas
+      query = @query_builder.build(API, 'cobranca', 'atrasadas')
+      response = @middleware.do_request(API, query, 'GET')
+      body = response.body
+
+      Parser.parse(API, 'Cobranca', body, 'atrasadas')
     end
   end
 end

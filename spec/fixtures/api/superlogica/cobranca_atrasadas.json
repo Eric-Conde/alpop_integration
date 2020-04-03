@@ -1,0 +1,25 @@
+{
+  "status": "200",
+  "session": "vim1j791q3hgdqfstk7fe0ckp1",
+  "msg": "",
+  "data": [
+    [{
+      "id_sacado_sac": "201",
+      "st_nomeref_sac": "Lucas Aparecido Ribeiro",
+      "compo_recebimento": [{
+        "st_descricao_prd": "Aluguel"
+      }],
+      "id_recebimento_recb": "1532",
+      "dt_vencimento_recb": "04\/01\/2020"
+    }, {
+      "id_sacado_sac": "220",
+      "st_nomeref_sac": "Antonella Tavares De Menezes Da Silva",
+      "compo_recebimento": [{
+        "st_descricao_prd": "Outros"
+      }],
+      "id_recebimento_recb": "2856",
+      "dt_vencimento_recb": "04\/01\/2020"
+    }]
+  ],
+  "executiontime": "1.9063s"
+}

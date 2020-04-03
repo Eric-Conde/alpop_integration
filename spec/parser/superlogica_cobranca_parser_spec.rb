@@ -23,30 +23,11 @@ describe SuperlogicaCobrancaParser do
   end
 
   context '.parse_all(response)' do
-    let(:cobranca_json_response) do
-      '{
-        "status": "200",
-        "session": "vim1j791q3hgdqfstk7fe0ckp1",
-        "msg": "",
-        "data": [
-          [{
-            "id_sacado_sac": "161",
-            "st_nomeref_sac": "F\u00e1bio Alessandro Bonfim Vilas Boas",
-            "st_nome_sac": "F\u00e1bio Alessandro Bonfim Vilas Boas",
-            "compo_recebimento": [{"id_boleto_comp":"1091"}]
-          }, {
-            "id_sacado_sac": "201",
-            "st_nomeref_sac": "Lucas Aparecido Ribeiro",
-            "st_nome_sac": "Lucas Aparecido Ribeiro",
-            "compo_recebimento": [{"id_boleto_comp":"1091"}]
-          }]
-        ],
-          "executiontime": "0.1561s"
-      }'
-    end
-
     context 'when calls parse_all(response)' do
       it 'returns an array of Cobranca' do
+        cobranca_json_response = File.read("spec/fixtures/api/superlogica/" \
+                                           "cobranca_all.json")
+
         cobrancas = Parser.parse('superlogica', 'Cobranca', 
                                 cobranca_json_response, 'all')
 

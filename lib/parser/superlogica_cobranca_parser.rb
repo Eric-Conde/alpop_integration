@@ -1,6 +1,5 @@
 require 'parser'
 require 'superlogica/cobranca'
-require 'byebug'
 
 class SuperlogicaCobrancaParser < Parser
   def self.parse_find(response)
@@ -10,9 +9,9 @@ class SuperlogicaCobrancaParser < Parser
 
   def self.parse_all(response)
     cobrancas = []
-    data = response['data'][0]
+    cobrancas_json = response['data'][0]
     
-    data.each do |cobranca|
+    cobrancas_json.each do |cobranca|
       compo_recebimento = cobranca['compo_recebimento'][0]
       id_boleto_comp = compo_recebimento['id_boleto_comp']
       
@@ -20,5 +19,21 @@ class SuperlogicaCobrancaParser < Parser
       cobrancas << cobranca
     end
     cobrancas
+  end
+
+  def self.parse_atrasadas(response)
+    cobrancas_json = response['data'][0]
+    cobrancas = []
+    
+    cobrancas_json.each do |cobranca|
+      id_boleto_comp = cobranca['id_recebimento_recb']
+      dt_vencimento_recb = cobranca['dt_vencimento_recb']
+      
+      cobranca = Superlogica::Cobranca.new(id_boleto_comp)
+      cobranca.vencimento = dt_vencimento_recb
+
+      cobrancas << cobranca
+    end
+    cobrancas 
   end
 end
