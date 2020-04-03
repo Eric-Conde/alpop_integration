@@ -13,7 +13,11 @@ class QueryBuilder
     object_json = api_json[object]
     action_json = object_json[action]
     query_placeholder = action_json['query']
-    params.each { |key, val| query_placeholder.gsub!(':' + key.to_s, val.to_s) }
+    
+    if params
+      params.each{|key, val| query_placeholder.gsub!(':' + key.to_s, val.to_s)}
+    end
+    
     query = query_placeholder
     query
   end

@@ -24,5 +24,13 @@ module Superlogica
       body = super('find', 'GET', { id: id })
       Parser.parse(API, 'Cobranca', body, 'find')
     end
+
+    def self.all
+      query = @query_builder.build(API, 'cobranca', 'all')
+      response = @middleware.do_request(API, query, 'GET')
+      body = response.body
+
+      Parser.parse(API, 'Cobranca', body, 'all')
+    end
   end
 end
