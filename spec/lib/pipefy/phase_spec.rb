@@ -14,7 +14,7 @@ describe Pipefy::Phase do
 
   describe '.find' do
     before(:each) do
-      find_phase_by_id = '{"data":{"phase":{"id":2122}}}'
+      find_phase_by_id = File.read("spec/fixtures/api/pipefy/phase_find.json")
 
       # Stub find phase by id to avoid HTTP requests.
       stub_request(:post, /api.pipefy.com/)

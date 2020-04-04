@@ -21,7 +21,8 @@ describe Pipefy::Card do
 
   describe '.find(id)' do
     before(:each) do
-      find_card_by_id_response = '{"data":{"card":{"id":2122}}}'
+      find_card_by_id_response = File.read("spec/fixtures/api/pipefy/" \
+                                           "card_find.json")
 
       # Stub find card by id to avoid HTTP requests.
       stub_request(:post, /api.pipefy.com/)
@@ -40,9 +41,8 @@ describe Pipefy::Card do
 
   describe '.all' do
     before(:each) do
-      all_cards_by_pipe_id = '{"data": {"cards": {"edges": [{"node": ' \
-                                 '{"id": "59542804","title": ' \
-                                 '"Andreza Sales Ferreira"}}]}}}'
+      all_cards_by_pipe_id = File.read("spec/fixtures/api/pipefy/" \
+                                       "card_all.json")
 
       # Stub find card by id to avoid HTTP requests.
       stub_request(:post, /api.pipefy.com/)
@@ -64,8 +64,7 @@ describe Pipefy::Card do
 
   describe 'when call .create(pipe_id)' do
     before(:each) do
-      created_card = '{"data":{"createCard":{"card":{"id":"61492643", '\
-                      '"title":"Card teste Atendimento"}}}}'
+      created_card = File.read("spec/fixtures/api/pipefy/card_create.json")
 
       # Stub find card by id to avoid HTTP requests.
       stub_request(:post, /api.pipefy.com/)

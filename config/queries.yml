@@ -29,6 +29,9 @@ queries:
         query: 'cobrancas'
       atrasadas:
         query: 'cobrancas?status=pendentes'
+    locatario:
+      find:
+        query: 'locatarios?id=:id'
 
     contrato:
       find:

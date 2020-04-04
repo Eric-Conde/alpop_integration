@@ -4,15 +4,8 @@ require 'superlogica/cobranca'
 require 'parser'
 
 describe Superlogica::Cobranca do
-  
-  let(:find_cobranca_by_id) do
-    '[{ "id_sacado_sac": "16028",
-    "st_nomeref_sac": "Integracao",
-    "st_nome_sac": "Integracao", "compo_recebimento": [{
-    "st_descricao_prd": "Adesão", "st_mesano_comp": "07/01/2019",
-    "st_descricao_comp": "","st_valor_comp": "500.00",
-    "id_boleto_comp": "651","id_sacado_comp": "16028" }] }]'
-  end
+  find_cobranca_by_id = File.read("spec/fixtures/api/superlogica/" \
+                                  "cobranca_find.json")
 
   describe 'initializer' do
     context 'when Superlogica::Cobranca is initialized' do
@@ -50,7 +43,6 @@ describe Superlogica::Cobranca do
 
   describe '.all' do
     context 'when call .all' do
-      
       cobranca_json_response = File.read("spec/fixtures/api/superlogica/" \
                                          "cobranca_all.json")
       
