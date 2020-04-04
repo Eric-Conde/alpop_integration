@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'base_helpers'
+require 'base_helper'
 
 # Base class for Ruby API objects.
 class Base

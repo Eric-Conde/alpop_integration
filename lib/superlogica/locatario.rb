@@ -37,7 +37,7 @@ module Superlogica
 
     def self.inadimplentes
       cobrancas_atrasadas = Cobranca.atrasadas('json')
-      
+
       Parser.parse(API, 'Locatario', cobrancas_atrasadas, 'inadimplentes')
     end
   end

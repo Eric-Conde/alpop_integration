@@ -13,11 +13,9 @@ class QueryBuilder
     object_json = api_json[object]
     action_json = object_json[action]
     query_placeholder = action_json['query']
-    
-    if params
-      params.each{|key, val| query_placeholder.gsub!(':' + key.to_s, val.to_s)}
-    end
-    
+
+    QueryBuilder.process_params(params, query_placeholder)
+
     query = query_placeholder
     query
   end
@@ -27,5 +25,11 @@ class QueryBuilder
     yml_file = YAML.safe_load(file)
     yml_seriealized = yml_file.inspect
     JSON.parse yml_seriealized.gsub('=>', ':')
+  end
+
+  def self.process_params(params, query_placeholder)
+    params&.each do |key, val|
+      query_placeholder.gsub!(':' + key.to_s, val.to_s)
+    end
   end
 end

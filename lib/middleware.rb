@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'middleware_helpers'
+require 'middleware_helper'
 
 # Middleware is responsible for credentials, API catalog and request/response.
 class Middleware

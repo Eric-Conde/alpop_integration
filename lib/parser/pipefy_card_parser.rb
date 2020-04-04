@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 require 'parser'
 require 'pipefy/card'
 
+# Parser to process Pipefy Card responses.
 class PipefyCardParser < Parser
   def self.parse_find(response)
     id = response['data']['card']['id']
