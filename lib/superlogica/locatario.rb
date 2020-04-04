@@ -3,6 +3,7 @@
 require 'base'
 require 'middleware'
 require 'query_builder'
+require 'superlogica/cobranca'
 require 'parser/superlogica_locatario_parser'
 
 # Superlogica module.
@@ -11,13 +12,14 @@ module Superlogica
   class Locatario < Base
     API = 'superlogica'
 
-    attr_accessor :id, :id_sacado_sac, :nome, :active
+    attr_accessor :id, :id_sacado_sac, :nome, :active, :cobrancas_atrasadas
 
     @middleware = Middleware.instance
     @query_builder = QueryBuilder.new
 
-    def initialize(id = nil)
+    def initialize(id = nil, id_sacado_sac = nil)
       @id = id
+      @id_sacado_sac = id_sacado_sac
     end
 
     def self.find(id)
@@ -31,6 +33,12 @@ module Superlogica
       body = response.body
 
       Parser.parse(API, 'Locatario', body, 'ativos')
+    end
+
+    def self.inadimplentes
+      cobrancas_atrasadas = Cobranca.atrasadas('json')
+      
+      Parser.parse(API, 'Locatario', cobrancas_atrasadas, 'inadimplentes')
     end
   end
 end

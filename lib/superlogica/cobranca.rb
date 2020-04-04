@@ -33,10 +33,12 @@ module Superlogica
       Parser.parse(API, 'Cobranca', body, 'all')
     end
 
-    def self.atrasadas
+    def self.atrasadas(format = nil)
       query = @query_builder.build(API, 'cobranca', 'atrasadas')
       response = @middleware.do_request(API, query, 'GET')
       body = response.body
+
+      return body if format == 'json'
 
       Parser.parse(API, 'Cobranca', body, 'atrasadas')
     end

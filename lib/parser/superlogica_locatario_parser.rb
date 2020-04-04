@@ -27,4 +27,25 @@ class SuperlogicaLocatarioParser < Parser
     end
     locatarios_ativos
   end
+
+  def self.parse_inadimplentes(response)
+    locatarios_inadimplentes = []
+    data = response['data']
+
+    data.each do |sacado|
+      id_sacado_sac = sacado['id_sacado_sac']
+      id = id_sacado_sac
+      compo_recebimento = sacado['compo_recebimento']
+      compo_recebimento_size = compo_recebimento.size
+
+      if compo_recebimento_size >= 3
+        locatario_inadimplente = Superlogica::Locatario
+                                  .new(id, id_sacado_sac)
+        locatario_inadimplente.cobrancas_atrasadas = compo_recebimento_size
+        
+        locatarios_inadimplentes << locatario_inadimplente 
+      end
+    end
+    locatarios_inadimplentes
+  end
 end

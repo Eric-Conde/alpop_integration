@@ -47,16 +47,14 @@ describe Superlogica::Locatario do
     end
   end
 
-  describe '.all' do
-  end
-
   describe '.ativos' do
     locatarios_ativos =  File.read("spec/fixtures/api/superlogica/" \
                                    "locatario_ativos.json")
 
     before(:each) do
-      stub_request(:get, "https://apps.superlogica.net:80/imobiliaria/api/locatarios?statusContrato=locados").
-        with(
+      stub_request(:get, "https://apps.superlogica.net:80/imobiliaria/api/" \
+                         "locatarios?statusContrato=locados")
+        .with(
           headers: {
           'Accept'=>'*/*',
           'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
@@ -77,6 +75,34 @@ describe Superlogica::Locatario do
     end
   end
 
-  describe '.inativos' do
+  describe '.inadimplentes' do
+    cobrancas_atrasadas =  File.read("spec/fixtures/api/superlogica/" \
+                                     "cobranca_atrasadas.json")
+
+    before(:each) do
+      stub_request(:get, "https://apps.superlogica.net:80/imobiliaria/api/" + 
+                         "cobrancas?status=pendentes")
+        .with(
+          headers: {
+            'Accept'=>'*/*',
+            'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+            'Access-Token'=>'put_here_your_credentials',
+            'Authorization'=>'put_here_your_credentials',
+            'Host'=>'apps.superlogica.net',
+            'User-Agent'=>'Ruby'
+          })
+        .to_return(status: 200, body: cobrancas_atrasadas, headers: {}
+      )
+    end
+
+    context 'when call .inadimplentes' do
+      it 'retrieves locatarios with 3 or more overdue cobrancas' do
+        inadimplentes = Superlogica::Locatario.inadimplentes
+        inadimplente = inadimplentes.first
+
+        expect(inadimplentes).to be_instance_of(Array)
+        expect(inadimplente.cobrancas_atrasadas).to be >= 3
+      end
+    end
   end
 end

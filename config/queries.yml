@@ -34,6 +34,8 @@ queries:
         query: 'locatarios?id=:id'
       ativos:
         query: 'locatarios?statusContrato=locados'
+      inadimplentes:
+        query: 'cobrancas?status=pendentes'
 
     contrato:
       find:
