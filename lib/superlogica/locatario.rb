@@ -11,7 +11,7 @@ module Superlogica
   class Locatario < Base
     API = 'superlogica'
 
-    attr_accessor :id
+    attr_accessor :id, :id_sacado_sac, :nome, :active
 
     @middleware = Middleware.instance
     @query_builder = QueryBuilder.new
@@ -23,6 +23,14 @@ module Superlogica
     def self.find(id)
       body = super('find', 'GET', { id: id })
       Parser.parse(API, 'Locatario', body, 'find')
+    end
+
+    def self.ativos
+      query = @query_builder.build(API, 'locatario', 'ativos')
+      response = @middleware.do_request(API, query, 'GET')
+      body = response.body
+
+      Parser.parse(API, 'Locatario', body, 'ativos')
     end
   end
 end

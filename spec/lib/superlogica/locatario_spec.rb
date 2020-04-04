@@ -10,6 +10,11 @@ describe Superlogica::Locatario do
         locatario = build :locatario
         expect(locatario.id).not_to be_nil
       end
+
+      it 'sets the locatario id_sacado_sac' do
+        locatario = build :locatario
+        expect(locatario.id_sacado_sac).not_to be_nil
+      end
     end
   end
 
@@ -33,11 +38,11 @@ describe Superlogica::Locatario do
     end
 
 
-    context 'when call .find()' do
+    context 'when call .find' do
       it 'retrieves a Locatario by id' do
-        cobranca = Superlogica::Locatario.find(18721)
+        locatario = Superlogica::Locatario.find(18721)
 
-        expect(cobranca.id).to eq 18721
+        expect(locatario.id).to eq 18721
       end
     end
   end
@@ -46,6 +51,30 @@ describe Superlogica::Locatario do
   end
 
   describe '.ativos' do
+    locatarios_ativos =  File.read("spec/fixtures/api/superlogica/" \
+                                   "locatario_ativos.json")
+
+    before(:each) do
+      stub_request(:get, "https://apps.superlogica.net:80/imobiliaria/api/locatarios?statusContrato=locados").
+        with(
+          headers: {
+          'Accept'=>'*/*',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Access-Token'=>'put_here_your_credentials',
+          'Authorization'=>'put_here_your_credentials',
+          'Host'=>'apps.superlogica.net',
+          'User-Agent'=>'Ruby'
+        })
+        .to_return(status: 200, body: locatarios_ativos, headers: {})
+    end
+
+    context 'when call .ativos' do
+      it 'retrieves locatarios ativos' do
+        ativos = Superlogica::Locatario.ativos
+        ativo = ativos.first
+        expect(ativo.active).to eq true
+      end
+    end
   end
 
   describe '.inativos' do

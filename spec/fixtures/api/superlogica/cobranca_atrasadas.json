@@ -2,7 +2,7 @@
   "status": "200",
   "session": "vim1j791q3hgdqfstk7fe0ckp1",
   "msg": "",
-  "data": [
+  "data":
     [{
       "id_sacado_sac": "201",
       "st_nomeref_sac": "Lucas Aparecido Ribeiro",
@@ -19,7 +19,6 @@
       }],
       "id_recebimento_recb": "2856",
       "dt_vencimento_recb": "04\/01\/2020"
-    }]
-  ],
+    }],
   "executiontime": "1.9063s"
 }

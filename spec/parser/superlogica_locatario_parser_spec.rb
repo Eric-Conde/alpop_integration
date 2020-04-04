@@ -20,4 +20,21 @@ describe SuperlogicaLocatarioParser do
       end
     end
   end
+
+  context '.parse_ativos(response)' do
+    context 'when calls parse_ativos(response)' do
+      it 'returns all the active locatarios' do
+        ativos_json_response = File.read("spec/fixtures/api/superlogica/" \
+                                            "locatario_ativos.json")
+
+        jsn_object = JSON.parse(ativos_json_response)
+        active_locatarios = jsn_object['data']
+
+        locatarios = Parser.parse('superlogica', 'Locatario', 
+                                ativos_json_response, 'ativos')
+
+        expect(locatarios.size).to eq active_locatarios.size
+      end
+    end
+  end
 end

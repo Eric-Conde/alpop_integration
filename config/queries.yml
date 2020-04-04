@@ -32,6 +32,8 @@ queries:
     locatario:
       find:
         query: 'locatarios?id=:id'
+      ativos:
+        query: 'locatarios?statusContrato=locados'
 
     contrato:
       find:
