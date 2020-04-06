@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'base'
-require 'middleware'
+require 'middleware/superlogica/superlogica_middleware'
 require 'query_builder'
 require 'parser/superlogica_cobranca_parser'
 
@@ -13,7 +13,7 @@ module Superlogica
 
     attr_accessor :id, :vencimento
 
-    @middleware = Middleware.instance
+    @middleware = SuperlogicaMiddleware.instance
     @query_builder = QueryBuilder.new
 
     def initialize(id = nil)
@@ -36,6 +36,7 @@ module Superlogica
     def self.atrasadas(format = nil)
       query = @query_builder.build(API, 'cobranca', 'atrasadas')
       response = @middleware.do_request(API, query, 'GET')
+
       body = response.body
 
       return body if format == 'json'

@@ -19,17 +19,14 @@ describe Superlogica::Cobranca do
   describe '.find' do
     before(:each) do
       # Stub find cobranca by id to avoid HTTP requests.
-      stub_request(:get, "https://apps.superlogica.net:80/" \
-                         "imobiliaria/api/cobrancas?id=651")
-          .with(headers: {
-            'Accept'=>'*/*',
-            'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            'Access-Token'=>'put_here_your_credentials',
-            'Authorization'=>'put_here_your_credentials',
+      stub_request(:get, "https://apps.superlogica.net/imobiliaria/api/cobrancas?id=651").
+          with(
+            headers: {
+            'Connection'=>'close',
             'Host'=>'apps.superlogica.net',
-            'User-Agent'=>'Ruby'
-          }).
-         to_return(status: 200, body: find_cobranca_by_id, headers: {})
+            'User-Agent'=>'http.rb/4.4.1'
+            }).
+          to_return(status: 200, body: find_cobranca_by_id, headers: {})
     end
 
     context 'when call .find()' do
@@ -47,17 +44,14 @@ describe Superlogica::Cobranca do
                                          "cobranca_all.json")
       
       before(:each) do        
-        stub_request(:get, 
-            "https://apps.superlogica.net:80/imobiliaria/api/cobrancas")
-          .with(
-            headers: {
-            'Accept'=>'*/*',
-            'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            'Access-Token'=>'put_here_your_credentials',
-            'Authorization'=>'put_here_your_credentials',
-            'Host'=>'apps.superlogica.net',
-            'User-Agent'=>'Ruby'
-            }).to_return(status: 200, body: cobranca_json_response, headers: {})
+       stub_request(:get, "https://apps.superlogica.net/imobiliaria/api/cobrancas").
+         with(
+           headers: {
+          'Connection'=>'close',
+          'Host'=>'apps.superlogica.net',
+          'User-Agent'=>'http.rb/4.4.1'
+           }).
+         to_return(status: 200, body: cobranca_json_response, headers: {})
       end
 
       it 'returns an array of Cobranca objects' do
@@ -75,18 +69,14 @@ describe Superlogica::Cobranca do
       atrasadas_response = File.read("spec/fixtures/api/superlogica/" \
                                      "cobranca_atrasadas.json")
 
-      stub_request(:get, "https://apps.superlogica.net:80/imobiliaria/api/" \
-                         "cobrancas?status=pendentes")
-        .with(
-          headers: {
-            'Accept'=>'*/*',
-            'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            'Access-Token'=>'put_here_your_credentials',
-            'Authorization'=>'put_here_your_credentials',
-            'Host'=>'apps.superlogica.net',
-            'User-Agent'=>'Ruby'
-          })
-        .to_return(status: 200, body: atrasadas_response, headers: {})
+      stub_request(:get, "https://apps.superlogica.net/imobiliaria/api/cobrancas?itensPorPagina=500&status=pendentes").
+         with(
+           headers: {
+          'Connection'=>'close',
+          'Host'=>'apps.superlogica.net',
+          'User-Agent'=>'http.rb/4.4.1'
+           }).
+         to_return(status: 200, body: atrasadas_response, headers: {})
       end
 
     context 'when call atrasadas' do

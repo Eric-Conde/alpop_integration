@@ -17,9 +17,15 @@ describe Pipefy::Phase do
       find_phase_by_id = File.read("spec/fixtures/api/pipefy/phase_find.json")
 
       # Stub find phase by id to avoid HTTP requests.
-      stub_request(:post, /api.pipefy.com/)
-        .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
-        .to_return(status: 200, body: find_phase_by_id, headers: {})
+       stub_request(:post, "https://api.pipefy.com/graphq").
+         with(
+           headers: {
+          'Connection'=>'close',
+          'Host'=>'api.pipefy.com',
+          'User-Agent'=>'http.rb/4.4.1'
+           }).
+         to_return(status: 200, body: find_phase_by_id, headers: {})
+
     end
 
     context 'when call .find()' do

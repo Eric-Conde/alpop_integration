@@ -7,9 +7,14 @@ describe Zendesk::Ticket do
     find_ticket_by_id = '{"ticket": {"url": "2122.json", "id": 2122}}'
 
     # Stub find card by id to avoid HTTP requests.
-    stub_request(:get, 'https://alpophelp.zendesk.com/api/v2/tickets/2122')
-      .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
-      .to_return(status: 200, body: find_ticket_by_id, headers: {})
+    stub_request(:get, "https://alpophelp.zendesk.com/api/v2/tickets/2122").
+         with(
+           headers: {
+          'Connection'=>'close',
+          'Host'=>'alpophelp.zendesk.com',
+          'User-Agent'=>'http.rb/4.4.1'
+           }).
+         to_return(status: 200, body: find_ticket_by_id, headers: {})
   end
 
   describe 'initialize' do

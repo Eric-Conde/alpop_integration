@@ -24,15 +24,12 @@ describe Superlogica::Locatario do
     
     before(:each) do
       # Stub find cobranca by id to avoid HTTP requests.
-      stub_request(:get, "https://apps.superlogica.net:80/imobiliaria/api/locatarios?id=18721").
+      stub_request(:get, "https://apps.superlogica.net/imobiliaria/api/locatarios?id=18721").
          with(
            headers: {
-          'Accept'=>'*/*',
-          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Access-Token'=>'put_here_your_credentials',
-          'Authorization'=>'put_here_your_credentials',
+          'Connection'=>'close',
           'Host'=>'apps.superlogica.net',
-          'User-Agent'=>'Ruby'
+          'User-Agent'=>'http.rb/4.4.1'
            }).
          to_return(status: 200, body: find_locatario_by_id, headers: {})
     end
@@ -42,7 +39,7 @@ describe Superlogica::Locatario do
       it 'retrieves a Locatario by id' do
         locatario = Superlogica::Locatario.find(18721)
 
-        expect(locatario.id).to eq 18721
+        expect(locatario.id).to eq '18721'
       end
     end
   end
@@ -52,18 +49,14 @@ describe Superlogica::Locatario do
                                    "locatario_ativos.json")
 
     before(:each) do
-      stub_request(:get, "https://apps.superlogica.net:80/imobiliaria/api/" \
-                         "locatarios?statusContrato=locados")
-        .with(
-          headers: {
-          'Accept'=>'*/*',
-          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'Access-Token'=>'put_here_your_credentials',
-          'Authorization'=>'put_here_your_credentials',
-          'Host'=>'apps.superlogica.net',
-          'User-Agent'=>'Ruby'
-        })
-        .to_return(status: 200, body: locatarios_ativos, headers: {})
+       stub_request(:get, "https://apps.superlogica.net/imobiliaria/api/locatarios?statusContrato=locados").
+          with(
+            headers: {
+            'Connection'=>'close',
+            'Host'=>'apps.superlogica.net',
+            'User-Agent'=>'http.rb/4.4.1'
+            }).
+          to_return(status: 200, body: locatarios_ativos, headers: {})
     end
 
     context 'when call .ativos' do
@@ -80,19 +73,14 @@ describe Superlogica::Locatario do
                                      "cobranca_atrasadas.json")
 
     before(:each) do
-      stub_request(:get, "https://apps.superlogica.net:80/imobiliaria/api/" + 
-                         "cobrancas?status=pendentes")
-        .with(
-          headers: {
-            'Accept'=>'*/*',
-            'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            'Access-Token'=>'put_here_your_credentials',
-            'Authorization'=>'put_here_your_credentials',
-            'Host'=>'apps.superlogica.net',
-            'User-Agent'=>'Ruby'
-          })
-        .to_return(status: 200, body: cobrancas_atrasadas, headers: {}
-      )
+       stub_request(:get, "https://apps.superlogica.net/imobiliaria/api/cobrancas?itensPorPagina=500&status=pendentes").
+         with(
+           headers: {
+          'Connection'=>'close',
+          'Host'=>'apps.superlogica.net',
+          'User-Agent'=>'http.rb/4.4.1'
+           }).
+         to_return(status: 200, body: cobrancas_atrasadas, headers: {})
     end
 
     context 'when call .inadimplentes' do

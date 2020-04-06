@@ -26,18 +26,14 @@ describe SuperlogicaMiddleware do
     let(:superlogica) { credentials['superlogica'] }
 
     before(:each) do
-      stub_request(:get, "https://apps.superlogica.net:80/imobiliaria/api/").
-        with(
-          headers: {
-            'Accept'=>'*/*',
-            'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            'Access-Token'=>'put_here_your_credentials',
-            'App-Token'=>'put_here_your_credentials',
-            'Authorization'=>'put_here_your_credentials',
-            'Host'=>'apps.superlogica.net',
-            'User-Agent'=>'Ruby'
-          })
-            .to_return(status: 200, body: "", headers: {})
+       stub_request(:get, "https://apps.superlogica.net/imobiliaria/api/").
+         with(
+           headers: {
+          'Connection'=>'close',
+          'Host'=>'apps.superlogica.net',
+          'User-Agent'=>'http.rb/4.4.1'
+           }).
+         to_return(status: 200, body: "", headers: {})
     end
 
     it 'does a GET request' do
@@ -47,7 +43,7 @@ describe SuperlogicaMiddleware do
       http_method = 'GET'
       response = superlogica_middleware.do_request(api, query, http_method)
 
-      expect(response.code).to eq '200'
+      expect(response.code).to eq 200
     end
   end
 end

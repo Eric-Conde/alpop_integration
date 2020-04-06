@@ -25,9 +25,14 @@ describe Pipefy::Card do
                                            "card_find.json")
 
       # Stub find card by id to avoid HTTP requests.
-      stub_request(:post, /api.pipefy.com/)
-        .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
-        .to_return(status: 200, body: find_card_by_id_response, headers: {})
+      stub_request(:post, "https://api.pipefy.com/graphq").
+         with(
+           headers: {
+          'Connection'=>'close',
+          'Host'=>'api.pipefy.com',
+          'User-Agent'=>'http.rb/4.4.1'
+           }).
+         to_return(status: 200, body: find_card_by_id_response, headers: {})
     end
 
     context 'when call .find(id)' do
@@ -45,9 +50,14 @@ describe Pipefy::Card do
                                        "card_all.json")
 
       # Stub find card by id to avoid HTTP requests.
-      stub_request(:post, /api.pipefy.com/)
-        .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
-        .to_return(status: 200, body: all_cards_by_pipe_id, headers: {})
+      stub_request(:post, "https://api.pipefy.com/graphq").
+         with(
+           headers: {
+          'Connection'=>'close',
+          'Host'=>'api.pipefy.com',
+          'User-Agent'=>'http.rb/4.4.1'
+           }).
+         to_return(status: 200, body: all_cards_by_pipe_id, headers: {})
     end
 
     context 'when call .all(pipe_id)' do
@@ -67,9 +77,14 @@ describe Pipefy::Card do
       created_card = File.read("spec/fixtures/api/pipefy/card_create.json")
 
       # Stub find card by id to avoid HTTP requests.
-      stub_request(:post, /api.pipefy.com/)
-        .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
-        .to_return(status: 200, body: created_card, headers: {})
+       stub_request(:post, "https://api.pipefy.com/graphq").
+         with(
+           headers: {
+          'Connection'=>'close',
+          'Host'=>'api.pipefy.com',
+          'User-Agent'=>'http.rb/4.4.1'
+           }).
+         to_return(status: 200, body: created_card, headers: {})
     end
 
     it 'returns card object' do

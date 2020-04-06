@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'http'
 require 'middleware_helper'
 
 # Middleware is responsible for credentials, API catalog and request/response.
@@ -25,16 +26,12 @@ class Middleware
 
   def do_request(api, query, http_method = 'GET')
     host, access_token, content_type = seek_api(api)
-    url = URI(host)
-    http = Net::HTTP.new(url.host, url.port)
-    http.use_ssl = true
+    http = HTTP
+    header = config_header(access_token, content_type)
 
-    request = do_post(url, query) if http_method == 'POST'
-    request = do_get(url, query) if http_method == 'GET'
-
-    request = config_header(request, access_token, content_type)
-
-    http.request(request)
+    request = do_post(http, header, host, query) if http_method == 'POST'
+    request = do_get(http, header, host, query) if http_method == 'GET'
+    request
   end
 
   class << self
@@ -51,32 +48,26 @@ class Middleware
 
   private
 
-  def config_header(request, access_token, content_type)
-    request['authorization'] = access_token
-    request['content-type'] = content_type
-    request['access_token'] = access_token
-
-    request
+  def config_header(access_token, content_type)
+    { :accept => 'application/json', :access_token => access_token,
+      'content-type' => content_type }
   end
 
-  def do_get(url, query)
-    url += query
-    Net::HTTP::Get.new(url)
+  def do_get(http, headers, host, query)
+    host += query
+    http.headers(headers).get(host)
   end
 
-  def do_post(url, query)
-    request = Net::HTTP::Post.new(url)
-    request.body = query
-    request
+  def do_post(http, headers, host, query)
+    http.headers(headers).post(host, body: query)
   end
 
   def seek_api(api)
     credentials_api = @credentials[api]
     catalog_api = @catalog[api]
-
     host = catalog_api['config']['host']
     access_token = credentials_api['access_token']
-    content_type = credentials_api['content_type']
+    content_type = catalog_api['config']['content_type']
     app_token = credentials_api['app_token']
 
     [host, access_token, content_type, app_token]

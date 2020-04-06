@@ -10,7 +10,7 @@ describe SuperlogicaLocatarioParser do
                                             "locatario_find.json")
 
         jsn_object = JSON.parse(locatario_json_response)
-        expected_id = jsn_object['data'][0]['id_pessoa_pes'].to_i
+        expected_id = jsn_object['data'][0]['id_pessoa_pes']
 
         locatario = Parser.parse('superlogica', 'Locatario', 
                                 locatario_json_response, 'find')
@@ -42,25 +42,31 @@ describe SuperlogicaLocatarioParser do
     context 'when calls parse_inadimplentes(response)' do
       it 'returns locatarios inadimplentes' do
         expected_locatarios_inadimplentes = []
+        cobrancas_atrasadas = []
+        cobranca_atrasada = {}
+
         cobrancas_atrasadas_json_response = File.read("spec/fixtures/api/" \
                                           "superlogica/cobranca_atrasadas.json")
 
         json_object = JSON.parse(cobrancas_atrasadas_json_response)
+        sacados = json_object['data'].first
+
+        sacados_by_id = sacados.group_by { |sacado| sacado["id_sacado_sac"] }
         
-        data = json_object['data']
+        inadimplentes = sacados_by_id.filter_map do |sacado| 
+          [sacado[1].first, sacado[1].size] if sacado[1].size >= 2
+        end
 
-        data.each do |sacado|
-          id_sacado_sac = sacado['id_sacado_sac']
+        inadimplentes.each do |inadimplente|
+          inadimplente_data = inadimplente.first
+          cobrancas_atrasadas = inadimplente.last
+
+          id_sacado_sac = inadimplente_data['id_sacado_sac']
           id = id_sacado_sac
-          compo_recebimento = sacado['compo_recebimento']
-          compo_recebimento_size = compo_recebimento.size
 
-          if compo_recebimento_size >= 3
-            locatario_inadimplente = Superlogica::Locatario
-                                      .new(id, id_sacado_sac)
-            locatario_inadimplente.cobrancas_atrasadas = compo_recebimento_size
-            expected_locatarios_inadimplentes << locatario_inadimplente 
-          end
+          locatario_inadimplente = Superlogica::Locatario.new(id)
+          locatario_inadimplente.cobrancas_atrasadas = cobrancas_atrasadas
+          expected_locatarios_inadimplentes << locatario_inadimplente
         end
         
         expect(expected_locatarios_inadimplentes.size).to eq 1

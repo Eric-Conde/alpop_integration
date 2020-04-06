@@ -17,9 +17,9 @@ module Superlogica
     @middleware = Middleware.instance
     @query_builder = QueryBuilder.new
 
-    def initialize(id = nil, id_sacado_sac = nil)
+    def initialize(id = nil)
       @id = id
-      @id_sacado_sac = id_sacado_sac
+      @id_sacado_sac = id
     end
 
     def self.find(id)
@@ -31,13 +31,11 @@ module Superlogica
       query = @query_builder.build(API, 'locatario', 'ativos')
       response = @middleware.do_request(API, query, 'GET')
       body = response.body
-
       Parser.parse(API, 'Locatario', body, 'ativos')
     end
 
     def self.inadimplentes
       cobrancas_atrasadas = Cobranca.atrasadas('json')
-
       Parser.parse(API, 'Locatario', cobrancas_atrasadas, 'inadimplentes')
     end
   end

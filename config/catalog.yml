@@ -13,7 +13,7 @@ catalog:
 
   superlogica:
     config:
-      host: http://apps.superlogica.net/imobiliaria/api/
+      host: https://apps.superlogica.net/imobiliaria/api/
       authorization: access_token
       content_type: application/json
 

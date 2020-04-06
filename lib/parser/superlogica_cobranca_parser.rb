@@ -25,7 +25,7 @@ class SuperlogicaCobrancaParser < Parser
   end
 
   def self.parse_atrasadas(response)
-    cobrancas_json = response['data']
+    cobrancas_json = response['data'][0]
     cobrancas = []
 
     cobrancas_json.each do |cobranca|

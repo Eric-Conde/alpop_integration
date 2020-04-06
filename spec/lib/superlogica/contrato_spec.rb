@@ -44,19 +44,14 @@ describe Superlogica::Contrato do
   describe '.find(id)' do
     context 'when call .find(id)' do
       before(:each) do
-        stub_request(:get, "https://apps.superlogica.net:80/imobiliaria/" \
-                           "api/contratos?comDadosDosInquilinos=1&" \
-                           "comDadosDosProprietarios=1&id=1222")
-          .with(
+        stub_request(:get, "https://apps.superlogica.net/imobiliaria/api/contratos?comDadosDosInquilinos=1&comDadosDosProprietarios=1&id=1222").
+          with(
             headers: {
-                'Accept'=>'*/*',
-                'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-                'Access-Token'=>'put_here_your_credentials',
-                'Authorization'=>'put_here_your_credentials',
-                'Host'=>'apps.superlogica.net',
-                'User-Agent'=>'Ruby'
-            }).to_return(status: 200, body: find_contrato_by_id_reponse, 
-                         headers: {})
+            'Connection'=>'close',
+            'Host'=>'apps.superlogica.net',
+            'User-Agent'=>'http.rb/4.4.1'
+            }).
+          to_return(status: 200, body: find_contrato_by_id_reponse, headers: {})
       end
 
       it 'retrieves contrato by id' do

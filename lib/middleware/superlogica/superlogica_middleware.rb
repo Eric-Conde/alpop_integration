@@ -10,10 +10,10 @@ class SuperlogicaMiddleware < Middleware
 
   private
 
-  def config_header(request, access_token, content_type)
-    super
+  def config_header(access_token, content_type)
+    headers = super
     app_token = seek_api('superlogica')[3]
-    request['app_token'] = app_token
-    request
+    headers[:app_token] = app_token
+    headers
   end
 end

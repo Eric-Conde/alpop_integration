@@ -8,6 +8,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'helpers'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
 require 'rspec'
+require 'byebug'
 require 'support/factory_bot'
 require 'webmock/rspec'
 require 'rack/test'

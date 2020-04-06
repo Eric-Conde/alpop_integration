@@ -30,16 +30,14 @@ describe Zendesk::User do
         find_user_by_id_response = '{"user": {"id": 2122}}'
 
         # Stub find user by id to avoid HTTP requests.
-        stub_request(:get, 'https://alpophelp.zendesk.com/api/v2/user/2122')
-          .with(headers: { 
-            'Accept'=>'*/*',
-            'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-            'Access-Token'=> zendesk['access_token'],
-            'Authorization'=> zendesk['access_token'],
+        stub_request(:get, "https://alpophelp.zendesk.com/api/v2/user/2122").
+          with(
+            headers: {
+            'Connection'=>'close',
             'Host'=>'alpophelp.zendesk.com',
-            'User-Agent'=>'Ruby'
-           })
-          .to_return(status: 200, body: find_user_by_id_response, headers: {})
+            'User-Agent'=>'http.rb/4.4.1'
+            }).
+          to_return(status: 200, body: find_user_by_id_response, headers: {})
       end
 
       it 'retrieves a user by id' do

@@ -52,13 +52,23 @@ describe Middleware do
       "title":"Oséias "}}}'
 
       # Stub find card by id to avoid HTTP requests.
-      stub_request(:post, /api.pipefy.com/)
-        .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
-        .to_return(status: 200, body: find_card_by_id_response, headers: {})
+      stub_request(:post, "https://api.pipefy.com/graphq").
+         with(
+           headers: {
+          'Connection'=>'close',
+          'Host'=>'api.pipefy.com',
+          'User-Agent'=>'http.rb/4.4.1'
+           }).
+         to_return(status: 200, body: find_card_by_id_response, headers: {})
 
-      stub_request(:get, /api.pipefy.com/)
-        .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
-        .to_return(status: 200, body: find_card_by_id_response, headers: {})
+       stub_request(:get, "https://api.pipefy.com/graphqwhatever").
+         with(
+           headers: {
+          'Connection'=>'close',
+          'Host'=>'api.pipefy.com',
+          'User-Agent'=>'http.rb/4.4.1'
+           }).
+         to_return(status: 200, body: find_card_by_id_response, headers: {})
     end
 
     it 'does a GET request' do
@@ -68,7 +78,7 @@ describe Middleware do
       http_method = 'GET'
       response = middleware.do_request(api, query, http_method)
 
-      expect(response.code).to eq '200'
+      expect(response.code).to eq 200
     end
 
     it 'does a POST request' do
@@ -78,7 +88,7 @@ describe Middleware do
       http_method = 'POST'
       response = middleware.do_request(api, query, http_method)
 
-      expect(response.code).to eq '200'
+      expect(response.code).to eq 200
     end
 
     it 'does a request to an API with status 200' do
@@ -88,7 +98,7 @@ describe Middleware do
       http_method = 'POST'
       response = middleware.do_request(api, query, http_method)
 
-      expect(response.code).to eq '200'
+      expect(response.code).to eq 200
     end
   end
 end
