@@ -69,7 +69,7 @@ describe Superlogica::Cobranca do
       atrasadas_response = File.read("spec/fixtures/api/superlogica/" \
                                      "cobranca_atrasadas.json")
 
-      stub_request(:get, "https://apps.superlogica.net/imobiliaria/api/cobrancas?itensPorPagina=500&status=pendentes").
+      stub_request(:get, "https://apps.superlogica.net/imobiliaria/api/cobrancas?dtFim=:dtFim&dtInicio=:dtInicio&itensPorPagina=500&status=pendentes").
          with(
            headers: {
           'Connection'=>'close',

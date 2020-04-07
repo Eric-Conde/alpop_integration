@@ -6,11 +6,11 @@ require 'parser'
 describe Pipefy::Card do
   describe 'initializer' do
     context 'when Pipefy::Card is initialized' do
-      it 'sets card title' do
-        card = build :card
+      # it 'sets card title' do
+      #   card = build :card
 
-        expect(card.title).not_to be_nil
-      end
+      #   expect(card.title).not_to be_nil
+      # end
 
       it 'sets the card id' do
         card = build :card
@@ -27,7 +27,7 @@ describe Pipefy::Card do
       # Stub find card by id to avoid HTTP requests.
       stub_request(:post, "https://api.pipefy.com/graphq").
          with(
-           headers: {
+          headers: {
           'Connection'=>'close',
           'Host'=>'api.pipefy.com',
           'User-Agent'=>'http.rb/4.4.1'
