@@ -22,7 +22,7 @@ Iniciar pelos testes para a classe Pipefy::Card (criar o arquivo card_spec.rb em
 
 Esse teste indica que existe um atributo id no objeto card, da classe Pipefy::Card, que pode ser preenchido no momento da criação de um objeto. Observe o guard no terminal para ver qual será o primeiro erro.
 
-```
+```bash
 1: An error occurred while loading ./spec/lib/pipefy/card_spec.rb. - Did you mean?
 2:                  rspec ./spec/lib/pipefy/phase_spec.rb
 3:                    rspec ./spec/lib/pipefy/pipe_spec.rb
@@ -38,7 +38,7 @@ O erro indica problema no arquivo card_spec.rb, na linha 3. A mensagem de erro i
 
 Após criar o arquivo, rodar os testes novamente. O próximo erro deve ser:
 
-```
+```bash
 1: An error occurred while loading ./spec/lib/pipefy/card_spec.rb.
 2: Failure/Error:
 3:   describe Pipefy::Card do
@@ -64,7 +64,7 @@ Esse erro indica problema na linha 6 do arquivo card_spec.rb. O erro menciona qu
 
 Ao salvar o arquivo card.rb, verificar o guard no terminal. O próximo erro segue abaixo:
 
-```
+```bash
 1: An error occurred while loading ./spec/lib/pipefy/card_spec.rb.
 2: Failure/Error:
 3:   describe Pipefy::Card do
@@ -92,7 +92,7 @@ O próximo erro indica que não foi possível reconhecer a constante Pipefy::Car
 
 Após isso, verificar o guard. O próximo erro será:
 
-```
+```bash
 Failures:
 
   1) Pipefy::Card initializer when Pipefy::Card is initialized sets the card id
