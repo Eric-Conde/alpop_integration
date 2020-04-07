@@ -26,7 +26,7 @@ describe Middleware do
 
     it 'must load access tokens' do
       # Load YML.
-      credentials_yml_file = File.read('config/credentials_sample.yml')
+      credentials_yml_file = File.read('config/credentials.yml')
       credentials_yml = YAML.safe_load(credentials_yml_file)
       # Load YML as a Hash.
       yml_seriealized = credentials_yml.inspect
