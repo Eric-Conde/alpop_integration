@@ -20,7 +20,8 @@ class SuperlogicaLocatarioParser < Parser
 
   def self.parse_inadimplentes(response)
     data = response['data'].first
-    detect_inadimplentes(data)
+
+    detect_inadimplentes(data) if data != ""
   end
 
   class << self
@@ -47,6 +48,7 @@ class SuperlogicaLocatarioParser < Parser
       cobrancas_atrasadas = []
       locatarios_inadimplentes = []
       sacados = data
+
       sacados_by_id = sacados.group_by { |sacado| sacado['id_sacado_sac'] }
 
       inadimplentes = sacados_by_id.filter_map do |sacado|

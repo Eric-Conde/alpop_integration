@@ -73,7 +73,7 @@ describe Superlogica::Locatario do
                                      "cobranca_atrasadas.json")
 
     before(:each) do
-       stub_request(:get, "https://apps.superlogica.net/imobiliaria/api/cobrancas?itensPorPagina=500&status=pendentes").
+       stub_request(:get, "https://apps.superlogica.net/imobiliaria/api/cobrancas?dtFim=&dtInicio=&itensPorPagina=500&status=pendentes").
          with(
            headers: {
           'Connection'=>'close',
