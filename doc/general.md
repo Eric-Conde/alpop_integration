@@ -58,29 +58,3 @@ Portanto, para implementar uma nova integração, o passo-a-passo é:
 
 Nesse processo é muito importante conhecer os dados de retorno. Para isso, utilize ferramentas como o seu navegador ou então o Curl para simular uma requisição e obter amostras dos dados de retorno. Conhecer os dados de retorno é fundamental para a etapa (5), mas também para todo o processo de TDD.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
