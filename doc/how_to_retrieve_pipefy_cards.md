@@ -272,7 +272,46 @@ def initialize(id = nil)
 end
 ```
 
-Após essa implementação, todos os testes passam. Porém, ainda não foi alcançado o objetivo. Portanto, nossos testes ainda não representam o problema que queremos tratar. Vamos melhorar nosso teste.
+Após essa implementação, todos os testes passam. Porém, ainda não foi alcançado o objetivo. Portanto, nossos testes ainda não representam o problema que queremos tratar. Vamos melhorar nosso teste. Ele agora deve ter a seguinte estrutura:
+
+```ruby
+context 'quando chamar find(id)' do
+  it 'retornar o card específico pelo id' do
+    expected_id = rand(1..5000)
+    query = query_builder.build('pipefy', 'card', 'find', {id: expected_id})
+    response = middleware.do_request('pipefy', query, 'GET')
+    expected_card = Pipefy::Card.parse(response, 'find')
+
+    card = Pipefy::Card.find(expected_id)
+    expect(card.id).to eq expected_card.id
+  end
+end
+```
+
+A linha ```expected_id = rand(1..5000)``` serve para gerar um número aleatório para ser utilizado na sequência do teste. Esse número aleatório representa o id que desejamos recuperar. Na sequência, precisamos definir qual a consulta que queremos fazer na API do Pipefy para recuperar um card específico: ```query = query_builder.build('pipefy', 'card', 'find', {id: expected_id})```. Para isso, usamos o método build do QueryBuilder. Uma vez que a query tenha sigo montada, então é hora de pedir ao middleware para fazer uma requisição para a API do Pipefy. Isso ocorre na linha ```response = middleware.do_request('pipefy', query, 'GET')```. Na sequência, o passo é processar a resposta (i.e. response) que retornou do middleware. Isso é implementado com a linha ```expected_card = Pipefy::Card.parse(response, 'find')```. Esse é o fluxo completo da implementação da integração. Agora é hora de rodar o teste e ir corrigindo os erros.
+
+```
+1) Pipefy::Card quando chamar find(id) retornar o card específico pelo id
+     Failure/Error: query = query_builder.build('pipefy', 'card', 'find', {id: expected_id})
+     
+     NameError:
+       undefined local variable or method `query_builder' for #<RSpec::ExampleGroups::PipefyCard::QuandoChamarFindId:0x00007fb67e4bfa50>
+     # ./spec/lib/pipefy/card_spec.rb:16:in `block (3 levels) in <top (required)>'
+```
+
+
 
 TO BE CONTINUE...
+
+
+
+
+
+
+
+
+
+
+
+
 
