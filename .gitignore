@@ -1,4 +1,5 @@
 config/credentials.yml
+config/credentials_sample.yml
 coverage/.resultset.json
 coverage/index.html
 coverage/.last_run.json
