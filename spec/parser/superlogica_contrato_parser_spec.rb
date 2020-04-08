@@ -40,4 +40,21 @@ describe SuperlogicaContratoParser do
       end
     end
   end
+
+  context 'parse_all(response)' do
+    context 'when calls parse_all(response)' do
+      it 'returns all contratos' do
+        all_contrato_json_response = File.read("spec/fixtures/api/superlogica/" \
+                                            "contrato_all.json")
+
+        contratos = Parser.parse('superlogica', 'Contrato', 
+                                 all_contrato_json_response, 'all')
+
+        contrato = contratos.first
+
+        expect(contratos.class).to eq Array
+        expect(contrato.class).to eq Superlogica::Contrato 
+      end
+    end
+  end
 end

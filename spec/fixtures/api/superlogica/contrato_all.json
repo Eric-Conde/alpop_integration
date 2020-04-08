@@ -1,0 +1,15 @@
+{
+  "status": "200",
+  "session": "rtsmldc1t89u9r2um31a0eva63",
+  "msg": "",
+  "data": [
+    [{
+      "id_contrato_con": "3",
+      "id_tipo_con": "1"
+    }, {
+      "id_contrato_con": "4",
+      "id_tipo_con": "1"
+    }]
+  ],
+  "executiontime": "0.2303s"
+}

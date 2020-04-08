@@ -24,5 +24,10 @@ module Superlogica
       body = super('find', 'GET', { id: id })
       Parser.parse(API, 'Contrato', body, 'find')
     end
+
+    def self.all
+      body = super('all', 'GET')
+      Parser.parse(API, 'Contrato', body, 'all')
+    end
   end
 end

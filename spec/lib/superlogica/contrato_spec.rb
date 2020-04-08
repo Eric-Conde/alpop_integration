@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'superlogica/contrato'
+require 'parser'
 
 describe Superlogica::Contrato do
   let(:find_contrato_by_id_reponse) do 
@@ -61,4 +62,32 @@ describe Superlogica::Contrato do
       end
     end
   end
+
+  describe '.all' do
+    context 'when call .all' do
+      all_contrato_json_response = File.read("spec/fixtures/api/superlogica/" \
+                                         "contrato_all.json")
+      
+      before(:each) do        
+       stub_request(:get, "https://apps.superlogica.net/imobiliaria/api/contratos").
+         with(
+           headers: {
+          'Accept'=>'application/json',
+          'Connection'=>'close',
+          'Content-Type'=>'application/json',
+          'Host'=>'apps.superlogica.net',
+          'User-Agent'=>'http.rb/4.4.1'
+           }).
+         to_return(status: 200, body: all_contrato_json_response, headers: {})
+      end
+
+      it 'returns an array of Contrato objects' do
+        contratos = Superlogica::Contrato.all
+        contrato = contratos.first
+
+        expect(contratos.class).to eq Array
+        expect(contrato.class).to eq Superlogica::Contrato
+      end
+    end
+  end  
 end

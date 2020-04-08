@@ -36,7 +36,8 @@ queries:
         query: 'locatarios?statusContrato=locados'
       inadimplentes:
         query: 'cobrancas?status=pendentes'
-
     contrato:
       find:
         query: 'contratos?id=:id&comDadosDosProprietarios=1&comDadosDosInquilinos=1'
+      all:
+        query: 'contratos'
