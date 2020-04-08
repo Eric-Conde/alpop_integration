@@ -1,6 +1,8 @@
-## Como recuperar um card específico do Pipefy
+## Prática do TDD
 
-### 1. Criar/Incrementar o objeto de domínio Ruby
+**Obs 1.** O passo-a-passo descrito aqui é apenas um exemplo para a prática do TDD. No projeto, a implementação do Card.find(id) já foi refatorada algumas vezes e é diferente do conteúdo abaixo.
+
+### Passo-a-passo para implementar Card.find(id)
 
 Iniciar pelos testes para a classe Pipefy::Card (criar o arquivo card_spec.rb em spec/lib/pipefy/). Em princípio, estamos interessados em recuperar os ID (identificadores únicos) dos cards, bem como o título.
 
@@ -299,18 +301,155 @@ A linha ```expected_id = rand(1..5000)``` serve para gerar um número aleatório
      # ./spec/lib/pipefy/card_spec.rb:16:in `block (3 levels) in <top (required)>'
 ```
 
+A variável query_builder não está definida em lugar algum. Vamos definir ela, como um objeto da classe QueryBuilder.
 
+```ruby
+it 'retornar o card específico pelo id' do
+  query_builder = QueryBuilder.new
+  
+  expected_id = rand(1..5000)
+  query = query_builder.build('pipefy', 'card', 'find', {id: expected_id})
+  response = middleware.do_request('pipefy', query, 'POST')
+  expected_card = Pipefy::Card.parse(response, 'find')
 
-TO BE CONTINUE...
+  card = Pipefy::Card.find(expected_id)
+  expect(card.id).to eq expected_card.id
+end
+```
 
+O próximo erro então é o seguinte:
 
+```
+Failures:
 
+  1) Pipefy::Card quando chamar find(id) retornar o card específico pelo id
+     Failure/Error: query_builder = QueryBuilder.new
+     
+     NameError:
+       uninitialized constant QueryBuilder
+     # ./spec/lib/pipefy/card_spec.rb:15:in `block (3 levels) in <top (required)>'
+```
 
+A constante QueryBuilder não está definida. Isso porque nós não fizemos o require do QueryBuilder. Então basta adicionar no topo do arquivo ```require 'query_builder'```. Isso nos leva ao próximo erro:
 
+```
+Failures:
 
+  1) Pipefy::Card quando chamar find(id) retornar o card específico pelo id
+     Failure/Error: query_placeholder = action_json['query']
+     
+     NoMethodError:
+       undefined method `[]' for nil:NilClass
+     # ./lib/query_builder.rb:15:in `build'
+     # ./spec/lib/pipefy/card_spec.rb:19:in `block (3 levels) in <top (required)>'
+```
 
+O erro agora está em ```/lib/query_builder.rb:15```, isso ocorre porque nós ainda não configuramos nenhuma query para atender ao método find da classe Card. Portanto, o QueryBuilder não sabe como montar a query que está sendo requisitada. Então, o próximo passo é configurarmos a query para consultar um Card por ID. Para isso, devemos editar o arquivo ```config/queries.yml``` e adicionar:
 
+```yml
+queries:
+  pipefy:
+    card:
+      find:
+        query: '{"query":"{ card(id: \":id\") {title, pipe {id}}}"}'
+```
 
+O próximo erro então é o seguinte:
+
+```
+1) Pipefy::Card quando chamar find(id) retornar o card específico pelo id
+     Failure/Error: response = middleware.do_request('pipefy', query, 'GET')
+     
+     NameError:
+       undefined local variable or method `middleware' for #<RSpec::ExampleGroups::PipefyCard::QuandoChamarFindId:0x00007fd993c21310>
+     # ./spec/lib/pipefy/card_spec.rb:20:in `block (3 levels) in <top (required)>'
+
+```
+
+A variável middleware não está definida. Vamos definir a variável com ```middleware = Middleware.instance``` e na parte superior fazer o ```require 'middleware'```.
+
+O próximo erro então aparece:
+
+```
+1) Pipefy::Card quando chamar find(id) retornar o card específico pelo id
+     Failure/Error: http.headers(headers).post(host, body: query)
+     
+     WebMock::NetConnectNotAllowedError:
+       Real HTTP connections are disabled. Unregistered request: POST https://api.pipefy.com/graphq with body '{"query":"{ card(id: \"2062\") {title, pipe {id}}}"}' with headers {'Accept'=>'application/json', 'Access-Token'=>'put_here_your_credentials', 'Connection'=>'close', 'Content-Type'=>'application/json', 'Host'=>'api.pipefy.com', 'User-Agent'=>'http.rb/4.4.1'}
+     
+       You can stub this request with the following snippet:
+     
+       stub_request(:post, "https://api.pipefy.com/graphq").
+         with(
+           body: "{\"query\":\"{ card(id: \\\"2062\\\") {title, pipe {id}}}\"}",
+           headers: {
+          'Accept'=>'application/json',
+          'Access-Token'=>'put_here_your_credentials',
+          'Connection'=>'close',
+          'Content-Type'=>'application/json',
+          'Host'=>'api.pipefy.com',
+          'User-Agent'=>'http.rb/4.4.1'
+           }).
+         to_return(status: 200, body: "", headers: {})
+```
+
+Este erro está dizendo o seguinte: todas as requisições/conexões HTTP reais estão desabilitadas no ambiente de testes e isso é desejável pois não queremos que nossos testes acessem as APIs de verdade. Seguindo no erro, ele menciona que tentou usar uma espécie de simulador para fazer a requisição (esse simulacro é chamado de stub) e, no entanto, não há esse stub registrado. Vamos então corrigir nosso teste e implementar o stub requisitado para simular a requisição HTTP que o middleware está tentando fazer. A implementação do stub e do novo teste fica da seguinte maneira:
+
+```ruby
+  context 'quando chamar find(id)' do
+    it 'retornar o card específico pelo id' do
+      expected_id = rand(1..5000)
+
+      find_card_by_id_response = "{\"data\":{\"card\":{\"id\":#{expected_id}}}}"
+
+      # Stub
+      stub_request(:post, "https://api.pipefy.com/graphq").
+        with(
+          headers: {
+          'Connection'=>'close',
+          'Host'=>'api.pipefy.com',
+          'User-Agent'=>'http.rb/4.4.1'
+           }).
+      to_return(status: 200, body: find_card_by_id_response, headers: {})
+
+      query_builder = QueryBuilder.new
+      middleware = Middleware.instance
+
+      query = query_builder.build('pipefy', 'card', 'find', {id: expected_id})
+      response = middleware.do_request('pipefy', query, 'POST')
+      expected_card = Pipefy::Card.parse(response, 'find')
+
+      card = Pipefy::Card.find(expected_id)
+      expect(card.id).to eq expected_card.id
+    end
+  end
+```
+
+O próximo erro indica que o método parse não foi encontrado na classe Card. Segue abaixo:
+
+```bash
+Failures:
+
+  1) Pipefy::Card quando chamar find(id) retornar o card específico pelo id
+     Failure/Error: expected_card = Pipefy::Card.parse(response, 'find')
+     
+     NoMethodError:
+       undefined method `parse' for Pipefy::Card:Class
+     # ./spec/lib/pipefy/card_spec.rb:36:in `block (3 levels) in <top (required)>'
+```
+
+Agora é hora de implementar o método parse para processar a resposta e criar um objeto Card a partir desse processamento. A implementação do método parse é bem simples: ele recebe como parâmetro a resposta da requisição (i.e. os dados que recuperamos da API do Pipefy), faz o processamento e instancia um objeto Card com as informações recuperadas. O código abaixo implementa essa rotina:
+
+```ruby
+  def self.parse(response)
+    response = JSON.parse(response)
+    id = response['data']['card']['id']
+
+    Pipefy::Card.new(id)
+  end
+```
+
+Após essa implementação, o método find da classe Pipefy::Card está finalizado.
 
 
 
