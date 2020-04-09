@@ -11,10 +11,7 @@ module Zendesk
   # Zendesk User ruby object.
   class User < Base
     attr_accessor :id
-
-    @middleware = Middleware.instance
-    @query_builder = QueryBuilder.new
-
+    
     def initialize(id = nil)
       @id = id
     end

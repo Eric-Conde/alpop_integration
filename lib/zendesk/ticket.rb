@@ -11,9 +11,6 @@ module Zendesk
 
     attr_accessor :id
 
-    @middleware = Middleware.instance
-    @query_builder = QueryBuilder.new
-
     def initialize(id = nil)
       @id = id
     end
