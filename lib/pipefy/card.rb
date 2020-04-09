@@ -13,33 +13,21 @@ module Pipefy
 
     attr_accessor :id, :title
 
-    @middleware = Middleware.instance
-    @query_builder = QueryBuilder.new
-
     def initialize(id = nil, title = nil)
       @title = title
       @id = id
     end
 
     def self.find(id)
-      body = super('find', 'POST', { id: id })
-      Parser.parse(API, 'Card', body, 'find')
+      response_body = super('POST', { id: id })
     end
 
     def self.all(pipe_id = nil)
-      query = @query_builder.build(API, 'card', 'all', { pipe_id: pipe_id })
-      response = @middleware.do_request(API, query, 'POST')
-      body = response.body
-
-      Parser.parse(API, 'Card', body, 'all')
+      response_body = super('POST', { pipe_id: pipe_id })
     end
 
     def self.create(params)
-      query = @query_builder.build(API, 'card', 'create', params)
-      response = @middleware.do_request(API, query, 'POST')
-      body = response.body
-
-      Parser.parse(API, 'Card', body, 'create')
+      response_body = super('POST', params)
     end
   end
 end

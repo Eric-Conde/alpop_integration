@@ -69,8 +69,8 @@ describe Superlogica::Locatario do
   end
 
   describe '.inadimplentes' do
-    cobrancas_atrasadas =  File.read("spec/fixtures/api/superlogica/" \
-                                     "cobranca_atrasadas.json")
+    cobrancas_pendentes =  File.read("spec/fixtures/api/superlogica/" \
+                                     "cobranca_pendentes.json")
 
     before(:each) do
        stub_request(:get, "https://apps.superlogica.net/imobiliaria/api/cobrancas?dtFim=&dtInicio=&itensPorPagina=500&status=pendentes").
@@ -80,7 +80,7 @@ describe Superlogica::Locatario do
           'Host'=>'apps.superlogica.net',
           'User-Agent'=>'http.rb/4.4.1'
            }).
-         to_return(status: 200, body: cobrancas_atrasadas, headers: {})
+         to_return(status: 200, body: cobrancas_pendentes, headers: {})
     end
 
     context 'when call .inadimplentes' do
@@ -89,7 +89,7 @@ describe Superlogica::Locatario do
         inadimplente = inadimplentes.first
 
         expect(inadimplentes).to be_instance_of(Array)
-        expect(inadimplente.cobrancas_atrasadas).to be >= 3
+        expect(inadimplente.cobrancas_pendentes).to be >= 3
       end
     end
   end

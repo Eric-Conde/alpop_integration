@@ -64,27 +64,28 @@ describe Superlogica::Cobranca do
     end
   end
 
-  describe '.atrasadas' do
+  describe '.pendentes' do
     before(:each) do
-      atrasadas_response = File.read("spec/fixtures/api/superlogica/" \
-                                     "cobranca_atrasadas.json")
+      pendentes_response = File.read("spec/fixtures/api/superlogica/" \
+                                     "cobranca_pendentes.json")
 
-      stub_request(:get, "https://apps.superlogica.net/imobiliaria/api/cobrancas?dtFim=:dtFim&dtInicio=:dtInicio&itensPorPagina=500&status=pendentes").
+      stub_request(:get, 'https://apps.superlogica.net/imobiliaria/api/' + 
+                         'cobrancas?dtFim=:dtFim&dtInicio=:dtInicio&' + 
+                         'itensPorPagina=500&status=pendentes').
          with(
            headers: {
           'Connection'=>'close',
           'Host'=>'apps.superlogica.net',
           'User-Agent'=>'http.rb/4.4.1'
            }).
-         to_return(status: 200, body: atrasadas_response, headers: {})
+         to_return(status: 200, body: pendentes_response, headers: {})
       end
 
-    context 'when call atrasadas' do
-      it 'returns cobrancas atrasadas' do
-        cobrancas_atrasadas = Superlogica::Cobranca.atrasadas
-        cobranca_atrasada = cobrancas_atrasadas.first
-        expect(cobranca_atrasada.id).not_to be_nil
-        expect(cobranca_atrasada.vencimento).not_to be_nil
+    context 'when call pendentes' do
+      it 'returns cobrancas pendentes' do
+        cobranca_pendentes = Superlogica::Cobranca.pendentes
+        cobranca_pendente = cobranca_pendentes.first
+        expect(cobranca_pendente.id).not_to be_nil
       end
     end 
   end

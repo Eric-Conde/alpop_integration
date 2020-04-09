@@ -27,7 +27,7 @@ queries:
         query: 'cobrancas?id=:id'
       all:
         query: 'cobrancas'
-      atrasadas:
+      pendentes:
         query: 'cobrancas?status=pendentes&itensPorPagina=500&dtInicio=:dtInicio&dtFim=:dtFim'
     locatario:
       find:

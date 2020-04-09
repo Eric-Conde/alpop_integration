@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'middleware'
-require 'query_builder'
 require 'base'
+require 'parser/zendesk_user_parser'
+
 
 # Zendesk module.
 module Zendesk
@@ -20,19 +20,7 @@ module Zendesk
     end
 
     def self.find(id)
-      respose_body = super('find', 'GET', { id: id })
-      User.parse(respose_body, 'find')
-    end
-
-    def self.parse(response, method)
-      response = JSON.parse(response)
-      method = "parse_#{method}"
-      User.send(method, response)
-    end
-
-    def self.parse_find(response)
-      user_id = response['user'] ['id']
-      User.new(user_id)
+      response_body = super('GET', { id: id })
     end
   end
 end

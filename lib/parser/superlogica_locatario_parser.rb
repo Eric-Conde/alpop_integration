@@ -45,7 +45,7 @@ class SuperlogicaLocatarioParser < Parser
     end
 
     def detect_inadimplentes(data)
-      cobrancas_atrasadas = []
+      cobrancas_pendentes = []
       locatarios_inadimplentes = []
       sacados = data
 
@@ -57,19 +57,19 @@ class SuperlogicaLocatarioParser < Parser
 
       inadimplentes.each do |inadimplente|
         inadimplente_data = inadimplente.first
-        cobrancas_atrasadas = inadimplente.last
+        cobrancas_pendentes = inadimplente.last
         id = inadimplente_data['id_sacado_sac']
         nome = inadimplente_data['st_nomeref_sac']
 
-        locatario_inadimplente = build_locatario(id, cobrancas_atrasadas, nome)
+        locatario_inadimplente = build_locatario(id, cobrancas_pendentes, nome)
         locatarios_inadimplentes << locatario_inadimplente
       end
       locatarios_inadimplentes
     end
 
-    def build_locatario(id, cobrancas_atrasadas, nome)
+    def build_locatario(id, cobrancas_pendentes, nome)
       locatario_inadimplente = Superlogica::Locatario.new(id)
-      locatario_inadimplente.cobrancas_atrasadas = cobrancas_atrasadas
+      locatario_inadimplente.cobrancas_pendentes = cobrancas_pendentes
       locatario_inadimplente.nome = nome
 
       locatario_inadimplente

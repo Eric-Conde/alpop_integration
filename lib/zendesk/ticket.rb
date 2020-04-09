@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'middleware'
-require 'query_builder'
 require 'base'
 
 # Zendesk module.
@@ -20,8 +18,7 @@ module Zendesk
     end
 
     def self.find(id)
-      response_body = super('find', 'GET', { id: id })
-      Ticket.parse(response_body, 'find')
+      response_body = super('GET', { id: id })
     end
 
     def self.parse(response, method)

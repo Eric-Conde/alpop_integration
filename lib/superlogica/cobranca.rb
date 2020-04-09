@@ -2,7 +2,6 @@
 
 require 'base'
 require 'middleware/superlogica/superlogica_middleware'
-require 'query_builder'
 require 'parser/superlogica_cobranca_parser'
 
 # Superlogica module.
@@ -13,35 +12,29 @@ module Superlogica
 
     attr_accessor :id, :vencimento
 
-    @middleware = SuperlogicaMiddleware.instance
-    @query_builder = QueryBuilder.new
+    @@middleware = SuperlogicaMiddleware.instance
 
     def initialize(id = nil)
       @id = id
     end
 
     def self.find(id)
-      body = super('find', 'GET', { id: id })
-      Parser.parse(API, 'Cobranca', body, 'find')
+      response_body = super('GET', { id: id })
     end
 
     def self.all
-      query = @query_builder.build(API, 'cobranca', 'all')
-      response = @middleware.do_request(API, query, 'GET')
-      body = response.body
-
-      Parser.parse(API, 'Cobranca', body, 'all')
+      response_body = super('GET')
     end
 
-    def self.atrasadas(params = nil, format = nil)
-      query = @query_builder.build(API, 'cobranca', 'atrasadas', params)
-      response = @middleware.do_request(API, query, 'GET')
+    def self.pendentes(params = nil, format = nil)
+      query = query_builder.build(API, 'cobranca', 'pendentes', params)
+      response = middleware.do_request(API, query, 'GET')
 
       body = response.body
 
       return body if format == 'json'
 
-      Parser.parse(API, 'Cobranca', body, 'atrasadas')
+      Parser.parse(API, 'Cobranca', body, 'pendentes')
     end
   end
 end

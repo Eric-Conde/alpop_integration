@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require 'base'
-require 'middleware'
-require 'query_builder'
 require 'superlogica/cobranca'
 require 'parser/superlogica_locatario_parser'
 
@@ -12,10 +10,7 @@ module Superlogica
   class Locatario < Base
     API = 'superlogica'
 
-    attr_accessor :id, :id_sacado_sac, :nome, :active, :cobrancas_atrasadas
-
-    @middleware = Middleware.instance
-    @query_builder = QueryBuilder.new
+    attr_accessor :id, :id_sacado_sac, :nome, :active, :cobrancas_pendentes
 
     def initialize(id = nil)
       @id = id
@@ -23,20 +18,19 @@ module Superlogica
     end
 
     def self.find(id)
-      body = super('find', 'GET', { id: id })
-      Parser.parse(API, 'Locatario', body, 'find')
+      response_body = super('GET', { id: id })
     end
 
     def self.ativos
-      query = @query_builder.build(API, 'locatario', 'ativos')
-      response = @middleware.do_request(API, query, 'GET')
+      query = query_builder.build(API, 'locatario', 'ativos')
+      response = middleware.do_request(API, query, 'GET')
       body = response.body
       Parser.parse(API, 'Locatario', body, 'ativos')
     end
 
     def self.inadimplentes(dtInicio = nil, dtFim = nil)
-      cobrancas_atrasadas = Cobranca.atrasadas({dtInicio: dtInicio, dtFim: dtFim}, 'json')
-      Parser.parse(API, 'Locatario', cobrancas_atrasadas, 'inadimplentes')
+      cobrancas_pendentes = Cobranca.pendentes({dtInicio: dtInicio, dtFim: dtFim}, 'json')
+      Parser.parse(API, 'Locatario', cobrancas_pendentes, 'inadimplentes')
     end
   end
 end

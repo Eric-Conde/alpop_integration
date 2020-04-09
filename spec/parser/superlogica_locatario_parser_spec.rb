@@ -42,13 +42,13 @@ describe SuperlogicaLocatarioParser do
     context 'when calls parse_inadimplentes(response)' do
       it 'returns locatarios inadimplentes' do
         expected_locatarios_inadimplentes = []
-        cobrancas_atrasadas = []
-        cobranca_atrasada = {}
+        cobrancas_pendentes = []
+        cobranca_pendente = {}
 
-        cobrancas_atrasadas_json_response = File.read("spec/fixtures/api/" \
-                                          "superlogica/cobranca_atrasadas.json")
+        cobrancas_pendentes_json_response = File.read("spec/fixtures/api/" \
+                                          "superlogica/cobranca_pendentes.json")
 
-        json_object = JSON.parse(cobrancas_atrasadas_json_response)
+        json_object = JSON.parse(cobrancas_pendentes_json_response)
         sacados = json_object['data'].first
 
         sacados_by_id = sacados.group_by { |sacado| sacado["id_sacado_sac"] }
@@ -59,13 +59,13 @@ describe SuperlogicaLocatarioParser do
 
         inadimplentes.each do |inadimplente|
           inadimplente_data = inadimplente.first
-          cobrancas_atrasadas = inadimplente.last
+          cobrancas_pendentes = inadimplente.last
 
           id_sacado_sac = inadimplente_data['id_sacado_sac']
           id = id_sacado_sac
 
           locatario_inadimplente = Superlogica::Locatario.new(id)
-          locatario_inadimplente.cobrancas_atrasadas = cobrancas_atrasadas
+          locatario_inadimplente.cobrancas_pendentes = cobrancas_pendentes
           expected_locatarios_inadimplentes << locatario_inadimplente
         end
         

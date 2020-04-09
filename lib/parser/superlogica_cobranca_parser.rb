@@ -24,7 +24,7 @@ class SuperlogicaCobrancaParser < Parser
     cobrancas
   end
 
-  def self.parse_atrasadas(response)
+  def self.parse_pendentes(response)
     cobrancas_json = response['data'][0]
     cobrancas = []
 
